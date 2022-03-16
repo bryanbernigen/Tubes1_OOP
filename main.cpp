@@ -42,6 +42,7 @@ int main()
   }
   craft.showAllResep();
   cout<<"============================================="<<endl;
+  // craftingTable.searchDict("DIAMOND");
   // sample interaction
   string command;
   while (cin >> command)

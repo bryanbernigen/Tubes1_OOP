@@ -29,6 +29,7 @@ public:
     void showAllResep();
     Item* craft();
     void RecipeMatch(Resep resep);
+    void searchDict(string nama);
 };
 
 

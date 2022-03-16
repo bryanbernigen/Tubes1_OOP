@@ -21,7 +21,7 @@ void Crafting::addItemDict(string line){
         temp[i]+=x;
       }
     }
-    if(temp[2]==temp[1]){
+    if(temp[2]=="-"){
         temp[2]=temp[1];
     }
     // this->itemDict.insert(pair<string,tuple<int,string,string>>(temp[1],(std::stoi(temp[0]),temp[2],temp[3])));
@@ -74,4 +74,13 @@ Item* Crafting::craft(){
         }
     }
     return new Tool();  
+}
+
+void Crafting::searchDict(string Nama){
+    tuple<int, string, string> temp;
+    temp = this->itemDict.at(Nama);
+    cout<<"key: "<<get<0>(temp)<<endl;
+    cout<<"nama: "<<Nama<<endl;
+    cout<<"tipe: "<<get<1>(temp)<<endl;
+    cout<<"tipetool: "<<get<2>(temp)<<endl;
 }
