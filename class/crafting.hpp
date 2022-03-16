@@ -4,13 +4,14 @@
 #include <list>
 #include <string>
 #include "resep.hpp"
+#include "item.hpp"
 
 using namespace std;
 
 class Crafting
 {
 private:
-    string *kotakresep;
+    Item **craftingtable;
     list<Resep>::iterator ptr;
     list<Resep> semuaresep;
 public:
@@ -18,7 +19,10 @@ public:
     //~Crafting();
 
     void addResep(Resep resep);
+    void addToCraftingTable(Item& item, int pos);
     void showAllResep();
+    Item* craft();
+    void RecipeMatch(Resep resep);
 };
 
 

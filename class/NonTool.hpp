@@ -24,6 +24,7 @@ public:
     void addItem(int);
 
     void printInfo();
+    NonTool * clone();
 
     friend ostream &operator<<(ostream &, NonTool);
 };

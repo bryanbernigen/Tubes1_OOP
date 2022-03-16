@@ -52,3 +52,8 @@ void Tool::printInfo()
     cout << "Name: " << this->getName() << endl;
     cout << "Durability: " << this->getDurability() << endl;
 }
+
+Tool * Tool::clone()
+{
+    return new Tool(*this); 
+}

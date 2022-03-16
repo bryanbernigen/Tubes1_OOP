@@ -62,6 +62,9 @@ Resep::Resep(string isi_resep)
     this->resepPembuatan;
 }
 
+string Resep::getResep() const{
+    return this->resepPembuatan;
+}
 void Resep::showResep(){
     cout<<this->resepPembuatan<<" "<<this->namaBarang<<" "<<this->jumlahBarang<<endl;
 }

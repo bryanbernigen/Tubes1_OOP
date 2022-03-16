@@ -23,6 +23,7 @@ public:
     *Catatan: jumlah x tergantung panjang_matrix dan lebar_matrix
     */
     Resep(string isi_resep);
+    string getResep () const;
     void showResep();
 };
 

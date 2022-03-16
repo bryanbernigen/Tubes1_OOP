@@ -33,6 +33,7 @@ public:
 
     // Pure Virtual, supaya jadi ABC
     virtual void printInfo() = 0;
+    virtual Item* clone() = 0;
 };
 
 #endif

@@ -35,6 +35,11 @@ void NonTool::printInfo()
     cout << "Quantity: " << this->getQuantity() << endl;
 }
 
+NonTool * NonTool::clone()
+{
+    return new NonTool(*this);
+}
+
 ostream &operator<<(ostream &os, NonTool nt)
 {
     os << nt.getName() << ", " << nt.getQuantity();

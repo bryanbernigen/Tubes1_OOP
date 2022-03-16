@@ -31,6 +31,7 @@ public:
     // other
     void useTool();
     void printInfo();
+    Tool * clone();
 };
 
 #endif
