@@ -1,4 +1,5 @@
 // sample main file, replace this with your own code
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -19,7 +20,7 @@ int main() {
 
   // read recipes
   for (const auto &entry :
-       filesystem::directory_iterator(configPath + "/recipe")) {
+      filesystem::directory_iterator(configPath + "/recipe")) {
     cout << entry.path() << endl;
     // read from file and do something
   }
