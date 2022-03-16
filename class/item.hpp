@@ -1,34 +1,38 @@
 #ifndef __ITEM_HPP_
 #define __ITEM_HPP_
 
+#include <iostream>
 #include <string>
 
 using namespace std;
 
-class item
+class Item
 {
 private:
-    int ID;
-    string Name;
-    string Type;
+    int id;
+    string name;
+    string type;
+
 public:
-    //4 Sekawan
-    item();
-    item(int ID, string Name, string Type);
-    //item(const item& other);
-    //~item();
-    //item &operator=( const item &other);
+    // 4 Sekawan
+    Item();
+    Item(int, string, string);
+    // Item(const Item& other);
+    //~Item();
+    // Item &operator=( const Item &other);
 
-    //Getter
-    const int getID();
-    const string getName();
-    const string getType();
+    // Getter
+    int getID() const;
+    string getName() const;
+    string getType() const;
 
-    //Setter
-    void setID(int ID);
-    void getName(string Name);
-    void getType(string Type);
+    // Setter
+    void setID(int);
+    void setName(string);
+    void setType(string);
+
+    // Pure Virtual, supaya jadi ABC
+    virtual void printInfo() = 0;
 };
-
 
 #endif

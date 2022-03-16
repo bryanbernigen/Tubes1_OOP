@@ -1,47 +1,54 @@
-#include "tool.hpp"
+#include "Tool.hpp"
 
-tool::tool() : item()
+Tool::Tool() : Item()
 {
-    this->Durability = MAX_DURABILITY;
+    this->durability = MAX_DURABILITY;
 }
 
-tool::tool(int ID, string Name, string Type) : item(ID, Name, Type)
+Tool::Tool(int ID, string Name, string Type) : Item(ID, Name, Type)
 {
-    this->Durability = MAX_DURABILITY;
+    this->durability = MAX_DURABILITY;
 }
 
-tool::tool(int ID, string Name, string Type, int Durability) : item(ID, Name, Type)
+Tool::Tool(int id, string name, string type, int durability) : Item(id, name, type)
 {
-    if (Durability > 0 && Durability < MAX_DURABILITY)
+    if (durability > 0 && durability < MAX_DURABILITY)
     {
-        this->Durability = Durability;
+        this->durability = durability;
     }
     else
     {
-        this->Durability = MAX_DURABILITY;
+        this->durability = MAX_DURABILITY;
     }
 }
 
-
-//getter
-const int tool::getDurability()
+// getter
+int Tool::getDurability() const
 {
-    return this->Durability;
+    return this->durability;
 }
 
-
-//setter
-void tool::setDurability(int Durability){
-    this->Durability=Durability;
+// setter
+void Tool::setDurability(int durability)
+{
+    this->durability = durability;
 }
 
-
-//other
-void tool::useTool(){
-    if(this->Durability > 0){
-        this->Durability--;
+// other
+void Tool::useTool()
+{
+    if (this->durability > 0)
+    {
+        this->durability--;
     }
-    else{
+    else
+    {
         throw "Tool sudah tidak dapat dipakai";
     }
+}
+
+void Tool::printInfo()
+{
+    cout << "Name: " << this->getName() << endl;
+    cout << "Durability: " << this->getDurability() << endl;
 }

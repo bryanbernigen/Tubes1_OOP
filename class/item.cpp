@@ -1,43 +1,43 @@
-#include "item.hpp"
+#include "Item.hpp"
 
-item::item()
+Item::Item()
 {
-    this->ID = 0;
-    this->Name = "-";
-    this->Type = "-";
+    this->id = 0;
+    this->name = "-";
+    this->type = "-";
 }
 
-item::item(int ID, string Name, string Type)
+Item::Item(int id, string name, string type)
 {
-    this->ID = ID;
-    this->Name = Name;
-    this->Type = Type;
+    this->id = id;
+    this->name = name;
+    this->type = type;
 }
 
 // Getter
-const int item::getID()
+int Item::getID() const
 {
-    return this->ID;
+    return this->id;
 }
-const string item::getName()
+string Item::getName() const
 {
-    return this->Name;
+    return this->name;
 }
-const string item::getType()
+string Item::getType() const
 {
-    return this->Type;
+    return this->type;
 }
 
 // Setter
-void item::setID(int ID)
+void Item::setID(int id)
 {
-    this->ID = ID;
+    this->id = id;
 }
-void item::getName(string Name)
+void Item::setName(string name)
 {
-    this->Name = Name;
+    this->name = name;
 }
-void item::getType(string Type)
+void Item::setType(string type)
 {
-    this->Type = Type;
+    this->type = type;
 }

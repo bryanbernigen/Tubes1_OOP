@@ -1,35 +1,36 @@
 #ifndef __TOOL_HPP_
 #define __TOOL_HPP_
 
-#include "item.hpp"
+#include "Item.hpp"
 #include <string>
 
 using namespace std;
 
 #define MAX_DURABILITY 10
 
-class tool : public item
+class Tool : public Item
 {
 private:
-    int Durability;
+    int durability;
+
 public:
-    //4 Sekawan
-    tool();
-    tool(int ID, string Name, string Type);
-    tool(int ID, string Name, string Type, int Durability);
-    // tool(const tool& other);
-    // ~tool();
-    // tool &operator= (const tool &other);
+    // 4 Sekawan
+    Tool();
+    Tool(int, string, string);
+    Tool(int, string, string, int);
+    // Tool(const Tool& other);
+    // ~Tool();
+    // Tool &operator= (const Tool &other);
 
-    //getter
-    const int getDurability();
+    // getter
+    int getDurability() const;
 
-    //setter
-    void setDurability(int Durability);
+    // setter
+    void setDurability(int);
 
-    //other
+    // other
     void useTool();
+    void printInfo();
 };
-
 
 #endif

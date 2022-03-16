@@ -1,0 +1,42 @@
+#include "NonTool.hpp"
+
+NonTool::NonTool() : Item(), quantity(1) {}
+NonTool::NonTool(int id, string name, string type) : Item(id, name, type), quantity(1) {}
+NonTool::NonTool(int id, string name, string type, int qty) : Item(id, name, type), quantity(qty) {}
+
+int NonTool::getQuantity() const { return this->quantity; }
+void NonTool::takeItem(int amount)
+{
+    if (amount > this->quantity)
+    {
+        cout << "You don't have that many item! Aborting..." << endl;
+    }
+    else
+    {
+        this->quantity -= amount;
+    }
+}
+
+void NonTool::addItem(int amount)
+{
+    if (this->quantity + amount > MAX_QUANTITY)
+    {
+        cout << "Aaaah!! You add too many item! Please separate them. Aborting... " << endl;
+    }
+    else
+    {
+        this->quantity += amount;
+    }
+}
+
+void NonTool::printInfo()
+{
+    cout << "Name: " << this->getName() << endl;
+    cout << "Quantity: " << this->getQuantity() << endl;
+}
+
+ostream &operator<<(ostream &os, NonTool nt)
+{
+    os << nt.getName() << ", " << nt.getQuantity();
+    return os;
+}
