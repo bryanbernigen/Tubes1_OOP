@@ -6,6 +6,8 @@
 #include <string>
 #include "class/resep.cpp"
 #include "class/crafting.cpp"
+#include "class/item.cpp"
+#include "class/tool.cpp"
 using namespace std;
 
 int main()
@@ -14,11 +16,13 @@ int main()
   string itemConfigPath = configPath + "/item.txt";
 
   // read item from config file
+  Crafting craftingTable;
   ifstream itemConfigFile(itemConfigPath);
   for (string line; getline(itemConfigFile, line);) {
     cout << line << endl;
-    // do something
+    craftingTable.addItemDict(line);
   }
+  cout<<"============================================="<<endl;
 
   // read recipes
   Crafting craft;

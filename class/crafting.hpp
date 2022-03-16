@@ -5,19 +5,25 @@
 #include <string>
 #include "resep.hpp"
 #include "item.hpp"
+#include "tool.hpp"
+#include "NonTool.hpp"
+#include <map>
+#include <tuple>
 
 using namespace std;
 
 class Crafting
 {
 private:
+    map<string,tuple<int,string,string>> itemDict;
     Item **craftingtable;
     list<Resep>::iterator ptr;
     list<Resep> semuaresep;
 public:
     Crafting();
-    //~Crafting();
+    virtual ~Crafting();
 
+    void addItemDict(string line);
     void addResep(Resep resep);
     void addToCraftingTable(Item& item, int pos);
     void showAllResep();
