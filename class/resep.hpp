@@ -8,9 +8,9 @@ using namespace std;
 class Resep
 {
 private:
-    string tipebarang;
-    int jumlahbarang;
-    string reseppembuatan;
+    string namaBarang;
+    int jumlahBarang;
+    string resepPembuatan;
 public:
     Resep();
     /*Membuat resep dari sebuah file txt  dengan format

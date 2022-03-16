@@ -7,9 +7,9 @@ using namespace std;
 
 Resep::Resep()
 {
-    this->tipebarang = "-";
-    this->jumlahbarang = 0;
-    this->reseppembuatan = "-";
+    this->namaBarang = "-";
+    this->jumlahBarang = 0;
+    this->resepPembuatan = "-";
 }
 
 Resep::Resep(string isi_resep)
@@ -42,9 +42,9 @@ Resep::Resep(string isi_resep)
     backptr = templist.end();
     backptr--;
     backptr--;
-    this->jumlahbarang = std::stoi(*backptr);
+    this->jumlahBarang = std::stoi(*backptr);
     backptr--;
-    this->tipebarang = *backptr;
+    this->namaBarang = *backptr;
     backptr--;
     while (*frontptr=="-")
     {
@@ -57,11 +57,11 @@ Resep::Resep(string isi_resep)
     backptr++;
     for ( frontptr; frontptr != backptr; frontptr++)
     {
-        this->reseppembuatan+=*frontptr;
+        this->resepPembuatan+=*frontptr;
     }
-    this->reseppembuatan;
+    this->resepPembuatan;
 }
 
 void Resep::showResep(){
-    cout<<this->reseppembuatan<<" "<<this->tipebarang<<" "<<this->tipebarang<<endl;
+    cout<<this->resepPembuatan<<" "<<this->namaBarang<<" "<<this->jumlahBarang<<endl;
 }

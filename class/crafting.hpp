@@ -12,7 +12,7 @@ class Crafting
 private:
     string *kotakresep;
     list<Resep>::iterator ptr;
-    list<Resep> semuaresep;;
+    list<Resep> semuaresep;
 public:
     Crafting();
     //~Crafting();

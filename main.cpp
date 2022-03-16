@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include "class/resep.cpp"
+#include "class/crafting.cpp"
 using namespace std;
 
 int main()
@@ -20,7 +21,7 @@ int main()
   }
 
   // read recipes
-  Crafting craft; 
+  Crafting craft;
   for (const auto &entry :
        filesystem::directory_iterator(configPath + "/recipe"))
   {
