@@ -17,7 +17,7 @@ class Crafting
 private:
     map<string,tuple<int,string,string>> itemDict;
     Item **craftingtable;
-    list<Resep>::iterator ptr;
+    bool* slotStatus;
     list<Resep> semuaresep;
 public:
     Crafting();
@@ -27,7 +27,7 @@ public:
     void addResep(Resep resep);
     void addToCraftingTable(Item& item, int pos);
     void showAllResep();
-    Item* craft();
+    string craft();
     void RecipeMatch(Resep resep);
     void searchDict(string nama);
 };

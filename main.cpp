@@ -8,6 +8,7 @@
 #include "class/crafting.cpp"
 #include "class/item.cpp"
 #include "class/tool.cpp"
+#include "class/nontool.cpp"
 using namespace std;
 
 int main()
@@ -25,7 +26,6 @@ int main()
   cout<<"============================================="<<endl;
 
   // read recipes
-  Crafting craft;
   for (const auto &entry :
        filesystem::directory_iterator(configPath + "/recipe"))
   {
@@ -37,13 +37,21 @@ int main()
       isi_resep+=line;
       isi_resep+=" ";
     }
-    craft.addResep(Resep(isi_resep));
+    craftingTable.addResep(Resep(isi_resep));
     // read from file and do something
   }
-  craft.showAllResep();
+  // craftingTable.showAllResep();
   cout<<"============================================="<<endl;
   // craftingTable.searchDict("DIAMOND");
   // sample interaction
+  NonTool stone = NonTool(0,"STONE","STONE");
+  NonTool stick = NonTool(0,"STICK","STICK");
+  craftingTable.addToCraftingTable(stone,2);
+  craftingTable.addToCraftingTable(stone,5);
+  craftingTable.addToCraftingTable(stone,1);
+  craftingTable.addToCraftingTable(stick,4);
+  craftingTable.addToCraftingTable(stick,7);
+  craftingTable.craft();
   string command;
   while (cin >> command)
   {
