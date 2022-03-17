@@ -20,13 +20,19 @@ public:
     // NonTool &operator= (const NonTool&);
 
     int getQuantity() const;
+    void setQuantity(int quantity);
     void takeItem(int);
     void addItem(int);
 
     void printInfo();
+<<<<<<< Updated upstream
     NonTool * clone();
+=======
+    int getQuantityDurability();
+    void setQuantityDurability(int);
+>>>>>>> Stashed changes
 
-    friend ostream &operator<<(ostream &, NonTool);
+    // friend ostream &operator<<(ostream &, NonTool);
 };
 
 #endif

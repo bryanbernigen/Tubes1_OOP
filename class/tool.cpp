@@ -53,7 +53,23 @@ void Tool::printInfo()
     cout << "Durability: " << this->getDurability() << endl;
 }
 
+<<<<<<< Updated upstream
 Tool * Tool::clone()
 {
     return new Tool(*this); 
 }
+=======
+int Tool::getQuantityDurability() {
+    return this->getDurability();
+}
+
+void Tool::setQuantityDurability(int number) {
+    this->setDurability(number);
+}
+
+// ostream &operator<<(ostream &os, Tool t)
+// {
+//     os << t.getName() << ", " << t.getDurability();
+//     return os;
+// }
+>>>>>>> Stashed changes

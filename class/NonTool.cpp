@@ -5,6 +5,11 @@ NonTool::NonTool(int id, string name, string type) : Item(id, name, type), quant
 NonTool::NonTool(int id, string name, string type, int qty) : Item(id, name, type), quantity(qty) {}
 
 int NonTool::getQuantity() const { return this->quantity; }
+
+void NonTool::setQuantity(int quantity) {
+    this->quantity = quantity;
+}
+
 void NonTool::takeItem(int amount)
 {
     if (amount > this->quantity)
@@ -35,6 +40,7 @@ void NonTool::printInfo()
     cout << "Quantity: " << this->getQuantity() << endl;
 }
 
+<<<<<<< Updated upstream
 NonTool * NonTool::clone()
 {
     return new NonTool(*this);
@@ -45,3 +51,18 @@ ostream &operator<<(ostream &os, NonTool nt)
     os << nt.getName() << ", " << nt.getQuantity();
     return os;
 }
+=======
+int NonTool::getQuantityDurability() {
+    return this->getQuantity();
+}
+
+void NonTool::setQuantityDurability(int number) {
+    this->setQuantity(number);
+}
+
+// ostream &operator<<(ostream &os, NonTool nt)
+// {
+//     os << nt.getName() << ", " << nt.getQuantity();
+//     return os;
+// }
+>>>>>>> Stashed changes
