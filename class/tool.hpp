@@ -31,15 +31,12 @@ public:
     // other
     void useTool();
     void printInfo();
-<<<<<<< Updated upstream
     Tool * clone();
-=======
     int getQuantityDurability();
     void setQuantityDurability(int);
 
     // friend ostream &operator<<(ostream &, NonTool nt);
     // friend ostream &operator<<(ostream &, Tool);
->>>>>>> Stashed changes
 };
 
 // ostream &operator<<(ostream &os, Tool nt)

@@ -9,6 +9,7 @@ inventory::inventory() {
         this->inventories[i] = NULL;
     }
     this->neff = 0;
+    this->itemDict;
 }
 inventory::inventory(const inventory& inv) {
     this->neff = inv.neff;
@@ -226,4 +227,36 @@ void inventory::exportInventory(string filename) {
         }
     }
     exportFile.close();
+}
+
+// Dictionary
+void inventory::addItemDict(string line){
+    int i=0;
+    string temp[4];
+    for (auto x : line)
+    {
+        if(x == ' '){
+            i++;
+        }
+        else{
+            temp[i]+=x;
+        }
+    }
+    if(temp[3]=="Tool"){
+        temp[2]==temp[3];
+    }
+    if(temp[2]=="-"){
+        temp[2]=temp[1];
+    }
+    // this->itemDict.insert(pair<string,tuple<int,string,string>>(temp[1],(std::stoi(temp[0]),temp[2],temp[3])));
+    this->itemDict.insert(make_pair(temp[1], make_tuple(stoi(temp[0]),temp[2],temp[3])));
+}
+
+void inventory::searchDict(string Nama){
+    tuple<int, string, string> temp;
+    temp = this->itemDict.at(Nama);
+    cout<<"key: "<<get<0>(temp)<<endl;
+    cout<<"nama: "<<Nama<<endl;
+    cout<<"tipe: "<<get<1>(temp)<<endl;
+    cout<<"tipetool: "<<get<2>(temp)<<endl;
 }

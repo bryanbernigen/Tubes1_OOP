@@ -40,7 +40,6 @@ void NonTool::printInfo()
     cout << "Quantity: " << this->getQuantity() << endl;
 }
 
-<<<<<<< Updated upstream
 NonTool * NonTool::clone()
 {
     return new NonTool(*this);
@@ -51,7 +50,6 @@ ostream &operator<<(ostream &os, NonTool nt)
     os << nt.getName() << ", " << nt.getQuantity();
     return os;
 }
-=======
 int NonTool::getQuantityDurability() {
     return this->getQuantity();
 }
@@ -65,4 +63,3 @@ void NonTool::setQuantityDurability(int number) {
 //     os << nt.getName() << ", " << nt.getQuantity();
 //     return os;
 // }
->>>>>>> Stashed changes

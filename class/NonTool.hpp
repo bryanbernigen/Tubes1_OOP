@@ -25,12 +25,9 @@ public:
     void addItem(int);
 
     void printInfo();
-<<<<<<< Updated upstream
     NonTool * clone();
-=======
     int getQuantityDurability();
     void setQuantityDurability(int);
->>>>>>> Stashed changes
 
     // friend ostream &operator<<(ostream &, NonTool);
 };

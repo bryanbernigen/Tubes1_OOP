@@ -13,25 +13,6 @@ Crafting::~Crafting(){
     delete [] this->slotStatus;
 }
 
-void Crafting::addItemDict(string line){
-    int i=0;
-    string temp[4];
-    for (auto x : line)
-    {
-      if(x == ' '){
-          i++;
-      }
-      else{
-        temp[i]+=x;
-      }
-    }
-    if(temp[2]=="-"){
-        temp[2]=temp[1];
-    }
-    // this->itemDict.insert(pair<string,tuple<int,string,string>>(temp[1],(std::stoi(temp[0]),temp[2],temp[3])));
-    this->itemDict.insert(make_pair(temp[1], make_tuple(stoi(temp[0]),temp[2],temp[3])));
-}
-
 void Crafting::addToCraftingTable(Item& item, int pos){
     this->craftingtable[pos] = item.clone();
     this->slotStatus[pos] = true;
@@ -117,13 +98,4 @@ string Crafting::craft(){
         }
     }
     return "";  
-}
-
-void Crafting::searchDict(string Nama){
-    tuple<int, string, string> temp;
-    temp = this->itemDict.at(Nama);
-    cout<<"key: "<<get<0>(temp)<<endl;
-    cout<<"nama: "<<Nama<<endl;
-    cout<<"tipe: "<<get<1>(temp)<<endl;
-    cout<<"tipetool: "<<get<2>(temp)<<endl;
 }

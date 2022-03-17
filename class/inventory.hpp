@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <map>
+#include <tuple>
 #include "item.hpp"
 #include "tool.hpp"
 #include "NonTool.hpp"
@@ -11,6 +13,7 @@ using namespace std;
 class inventory
 {
 private:
+    map<string,tuple<int,string,string>> itemDict;
     Item** inventories;
     int neff; // indeks efektif terakhir
 public:
@@ -45,6 +48,10 @@ public:
     // Output
     void displayInventory();
     void exportInventory(string filename);
+
+    // Dictionary
+    void addItemDict(string line);
+    void searchDict(string nama);
 };
 
 #endif

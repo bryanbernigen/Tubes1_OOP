@@ -9,6 +9,7 @@
 #include "class/item.cpp"
 #include "class/tool.cpp"
 #include "class/nontool.cpp"
+#include "class/inventory.cpp"
 using namespace std;
 
 int main()
@@ -18,10 +19,11 @@ int main()
 
   // read item from config file
   Crafting craftingTable;
+  inventory inv;
   ifstream itemConfigFile(itemConfigPath);
   for (string line; getline(itemConfigFile, line);) {
     cout << line << endl;
-    craftingTable.addItemDict(line);
+    inv.addItemDict(line);
   }
   cout<<"============================================="<<endl;
 
