@@ -252,7 +252,7 @@ void inventory::addItemDict(string line){
     this->itemDict.insert(make_pair(temp[1], make_tuple(stoi(temp[0]),temp[2],temp[3])));
 }
 
-Item* inventory::searchDict(string Nama){
+Item* inventory::searchDict(string Nama, int jumlah){
     /*
     Exceptionnya masih belom bagus
     Pemakaian sementara sebelom dibenerin kayak gini:
@@ -278,7 +278,7 @@ Item* inventory::searchDict(string Nama){
             return new Tool(get<0>(temp), Nama, get<1>(temp));
         }
         else{
-            return new NonTool(get<0>(temp), Nama, get<1>(temp));
+            return new NonTool(get<0>(temp), Nama, get<1>(temp), jumlah);
         }
     }
 }

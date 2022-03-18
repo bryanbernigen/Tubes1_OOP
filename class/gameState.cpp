@@ -98,10 +98,9 @@ void GameState::commandHandler()
 
 void GameState::give(string nama, int jumlah)
 {
-    cout << "A" << nama << "A" << jumlah << "A" << endl;
     try
     {
-        Item *it = this->inv.searchDict(nama);
+        Item *it = this->inv.searchDict(nama,jumlah);
         this->inv.addInventory(*it);
         this->inv.displayInventory();
     }
