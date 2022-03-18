@@ -10,50 +10,26 @@
 #include "class/tool.cpp"
 #include "class/nontool.cpp"
 #include "class/inventory.cpp"
+#include "class/gameState.cpp"
+
 using namespace std;
 
 int main()
 {
   string configPath = "./config";
   string itemConfigPath = configPath + "/item.txt";
-
-  // read item from config file
-  Crafting craftingTable;
-  inventory inv;
-  ifstream itemConfigFile(itemConfigPath);
-  for (string line; getline(itemConfigFile, line);) {
-    cout << line << endl;
-    inv.addItemDict(line);
-  }
-  cout<<"============================================="<<endl;
-
-  // read recipes
-  for (const auto &entry :
-       filesystem::directory_iterator(configPath + "/recipe"))
-  {
-    // cout << entry.path() << endl;
-    ifstream itemConfigFile(entry.path());
-    string isi_resep;
-    for (string line; getline(itemConfigFile, line);)
-    {
-      isi_resep+=line;
-      isi_resep+=" ";
-    }
-    craftingTable.addResep(Resep(isi_resep));
-    // read from file and do something
-  }
-  // craftingTable.showAllResep();
-  cout<<"============================================="<<endl;
-  // craftingTable.searchDict("DIAMOND");
-  // sample interaction
+  //Configure Game
+  GameState game(configPath);
+  
+  //Testing
   NonTool stone = NonTool(0,"STONE","STONE");
   NonTool stick = NonTool(0,"STICK","STICK");
-  craftingTable.addToCraftingTable(stone,2);
-  craftingTable.addToCraftingTable(stone,5);
-  craftingTable.addToCraftingTable(stone,1);
-  craftingTable.addToCraftingTable(stick,4);
-  craftingTable.addToCraftingTable(stick,7);
-  craftingTable.craft();
+  game.craftingTable.addToCraftingTable(stone,2);
+  game.craftingTable.addToCraftingTable(stone,5);
+  game.craftingTable.addToCraftingTable(stone,1);
+  game.craftingTable.addToCraftingTable(stick,4);
+  game.craftingTable.addToCraftingTable(stick,7);
+  game.craftingTable.craft();
   string command;
   while (cin >> command)
   {
