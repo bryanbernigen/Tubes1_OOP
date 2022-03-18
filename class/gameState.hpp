@@ -19,7 +19,9 @@ public:
     di path config_path harus terdapat folder recipe*/
     GameState(string path_item);
     // ~GameState();
-
+    
+    void commandHandler();
+    void give(string nama, int jumlah);
 };
 
 
