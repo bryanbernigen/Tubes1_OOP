@@ -51,7 +51,7 @@ public:
 
     // Dictionary
     void addItemDict(string line);
-    void searchDict(string nama);
+    Item* searchDict(string nama);
 };
 
 #endif

@@ -252,11 +252,33 @@ void inventory::addItemDict(string line){
     this->itemDict.insert(make_pair(temp[1], make_tuple(stoi(temp[0]),temp[2],temp[3])));
 }
 
-void inventory::searchDict(string Nama){
-    tuple<int, string, string> temp;
-    temp = this->itemDict.at(Nama);
-    cout<<"key: "<<get<0>(temp)<<endl;
-    cout<<"nama: "<<Nama<<endl;
-    cout<<"tipe: "<<get<1>(temp)<<endl;
-    cout<<"tipetool: "<<get<2>(temp)<<endl;
+Item* inventory::searchDict(string Nama){
+    /*
+    Exceptionnya masih belom bagus
+    Pemakaian sementara sebelom dibenerin kayak gini:
+    try
+    {
+        Item *it = this->inv.searchDict(nama);
+        this->inv.addInventory(*it);
+        this->inv.displayInventory();
+    }
+    catch (const char *e)
+    {
+        std::cerr << e << '\n';
+    }
+    */
+    if(this->itemDict.find(Nama)==this->itemDict.end()){
+        throw "Item not Found";
+    }
+    else{
+        tuple<int, string, string> temp;
+        temp = this->itemDict.at(Nama);
+        if (get<2>(temp)=="TOOL")
+        {
+            return new Tool(get<0>(temp), Nama, get<1>(temp));
+        }
+        else{
+            return new NonTool(get<0>(temp), Nama, get<1>(temp));
+        }
+    }
 }
