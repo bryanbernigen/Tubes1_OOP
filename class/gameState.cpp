@@ -45,7 +45,18 @@ void GameState::commandHandler()
     }
     else if (command == "DISCARD")
     {
-        // discard();
+        string id_inventory;
+        int jumlah;
+        cin >> id_inventory >> jumlah;
+        if (id_inventory[0] == 'I')
+        {
+            id_inventory.erase(0,1);
+            discard(std::stoi(id_inventory),jumlah);
+        }
+        else
+        {
+            cout << "Invalid command" << endl;
+        }
     }
     else if (command == "MOVE")
     {
@@ -100,12 +111,16 @@ void GameState::give(string nama, int jumlah)
 {
     try
     {
-        Item *it = this->inv.searchDict(nama,jumlah);
+        Item *it = this->inv.searchDict(nama, jumlah);
         this->inv.addInventory(*it);
-        this->inv.displayInventory();
     }
     catch (const char *e)
     {
         std::cerr << e << '\n';
     }
+}
+
+void GameState::discard(int id_inventory, int jumlah)
+{
+    this->inv.takeInventory(id_inventory, jumlah);
 }
