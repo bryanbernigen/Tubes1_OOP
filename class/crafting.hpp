@@ -48,7 +48,7 @@ class SlotFilledException: public exception{
         const char* what() const throw(){
             return "Slot is Filled with other item";
         }
-}
+};
 
 
 
