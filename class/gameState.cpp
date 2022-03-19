@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 
+#define MAX_KOLOM 3
+
 GameState::GameState(){};
 
 GameState::GameState(string config_path)
@@ -18,11 +20,26 @@ GameState::GameState(string config_path)
         // cout << entry.path() << endl;
         ifstream itemConfigFile(entry.path());
         string isi_resep;
-        for (string line; getline(itemConfigFile, line);)
+        string ukuran;
+        getline(itemConfigFile, ukuran);
+        isi_resep += ukuran+" ";
+        int kolom = (int)ukuran[2] - '0';
+        int baris = (int)ukuran[0] - '0';
+        for (int j = 0; j < baris; j++)
         {
+            string line;
+            getline(itemConfigFile, line);
             isi_resep += line;
+            for (int i = kolom; i <MAX_KOLOM ; i++)
+            {
+                isi_resep += " -";
+            }
+
             isi_resep += " ";
         }
+        string line;
+        getline(itemConfigFile, line);
+        isi_resep+=line+" ";
         this->craftingTable.addResep(Resep(isi_resep));
     }
 }
@@ -50,8 +67,8 @@ void GameState::commandHandler()
         cin >> id_inventory >> jumlah;
         if (id_inventory[0] == 'I')
         {
-            id_inventory.erase(0,1);
-            discard(std::stoi(id_inventory),jumlah);
+            id_inventory.erase(0, 1);
+            discard(std::stoi(id_inventory), jumlah);
         }
         else
         {

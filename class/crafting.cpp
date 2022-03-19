@@ -65,7 +65,7 @@ string Crafting::craft(){
             string str = craftingstring;
             str.replace(str.find(ptr->getResep()),ptr->getResep().length(),"-");
             for (it = str.begin(); it != str.end();it++) {
-                cout<<*it;
+                // cout<<*it;
                 // Print current character
                 if(*it != '-') {
                     found = false;
