@@ -21,6 +21,7 @@ public:
     // ~GameState();
     
     void commandHandler();
+    void use(int invId);
     void give(string nama, int jumlah);
     void discard(int id_inventory, int jumlah);
 };
