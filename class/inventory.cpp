@@ -40,7 +40,7 @@ bool inventory::isFull() {
     return (this->neff >= 27);
 }
 bool inventory::isTool(int idx){ // If false --> NonTool
-    return (this->inventories[idx]->getType() == "Tools");
+    return (this->inventories[idx]->getType() == "TOOL");
 }
 
 // Functions
@@ -242,8 +242,8 @@ void inventory::addItemDict(string line){
             temp[i]+=x;
         }
     }
-    if(temp[3]=="Tool"){
-        temp[2]==temp[3];
+    if(temp[3]=="TOOL"){
+        temp[2]=temp[3];
     }
     if(temp[2]=="-"){
         temp[2]=temp[1];
@@ -275,10 +275,10 @@ Item* inventory::searchDict(string Nama, int jumlah){
         temp = this->itemDict.at(Nama);
         if (get<2>(temp)=="TOOL")
         {
-            return new Tool(get<0>(temp), Nama, get<1>(temp));
+            return new Tool(get<0>(temp), Nama, get<2>(temp));
         }
         else{
-            return new NonTool(get<0>(temp), Nama, get<1>(temp), jumlah);
+            return new NonTool(get<0>(temp), Nama, get<2>(temp), jumlah);
         }
     }
 }

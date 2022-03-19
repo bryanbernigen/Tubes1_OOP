@@ -34,7 +34,7 @@ void GameState::commandHandler()
     cin >> command;
     if (command == "SHOW")
     {
-        // show();
+        inv.displayInventory();
     }
     else if (command == "GIVE")
     {
@@ -72,7 +72,19 @@ void GameState::commandHandler()
     }
     else if (command == "USE")
     {
-        // use();
+        // Get Inventory Id (1..27)
+        int invId;
+        cin >> invId ;
+
+        // Use tool
+        try
+        {
+            use(invId);
+        }
+        catch (const char *e)
+        {
+            std::cerr << e << '\n';
+        }
     }
     else if (command == "CRAFT")
     {
@@ -104,6 +116,30 @@ void GameState::commandHandler()
     {
         // throw ivalidCommand
         cout << "Invalid command" << endl;
+    }
+}
+
+void GameState::use(int invId)
+{
+    // mau pake try n catch atau abc
+    // cara ngecek invId valid
+    // ngecek item yg diambil itu object yang sama(durabilty == 0)
+    //cek struktur dict, searchDict ada yg diganti 1->2
+    
+
+    
+    Item& it = this->inv.getInventory(invId-1);
+    if(inv.isTool(invId-1))
+    {
+        it.setQuantityDurability(it.getQuantityDurability()-1);
+        if (it.getQuantityDurability() == 0)
+        {
+            inv.takeInventory(it);
+        }
+    }
+    else 
+    {
+        throw "Choose Tool not Non-Tool";
     }
 }
 
