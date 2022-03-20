@@ -25,6 +25,7 @@ public:
     Resep(string isi_resep);
     string getNamaBarang() const;
     string getResep () const;
+    int getJumlah() const;
     void showResep();
 };
 
