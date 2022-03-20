@@ -27,6 +27,7 @@ public:
     Item* takeItem(int pos, int quantity);
     Item* takeItem(int pos);
     void showAllResep();
+    void showCraftingTable();
     pair<string,int> craft();
     void RecipeMatch(Resep resep);
 };

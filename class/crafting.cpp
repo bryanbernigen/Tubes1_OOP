@@ -80,7 +80,22 @@ void Crafting::showAllResep(){
     }   
 }
 
-
+void Crafting::showCraftingTable(){
+    for(int i = 0; i < 9; i++) {
+        if (this->slotStatus[i]){
+            this->craftingtable[i]->printInfo();
+        }
+        else {
+            cout << "[EMPTY]";
+        }
+        if (i % 3 != 2) {
+            cout << " ";
+        }
+        else {
+            cout << endl;
+        }
+    }
+}
 
 //TODO Define return + Nontool
 pair<string,int> Crafting::craft(){
