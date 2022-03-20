@@ -105,10 +105,14 @@ void GameState::commandHandler()
     }
     else if (command == "CRAFT")
     {
-        // craft();
-
-        // DARI KAKAKNYA, HAPUS KALO UDAH GA PERLU
-        cout << "TODO" << endl;
+        pair<string,int> crafted = craftingTable.craft();
+        if (crafted.first != ""){
+            cout << "Item Created";
+            give(crafted.first, crafted.second);
+        }
+        else{
+            cout << "Item Not Created!";
+        }
     }
     else if (command == "EXPORT")
     {

@@ -72,3 +72,8 @@ void Resep::showResep(){
 string Resep::getNamaBarang() const{
     return this->namaBarang;
 }
+
+int Resep::getJumlah() const{
+    return this->jumlahBarang;
+}
+

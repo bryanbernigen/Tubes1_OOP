@@ -7,6 +7,8 @@
 #include "item.hpp"
 #include "tool.hpp"
 #include "NonTool.hpp"
+#include <iostream>
+using namespace std;
 
 using namespace std;
 
@@ -26,7 +28,7 @@ public:
     Item *takeItem(int pos, int quantity);
     Item *takeItem(int pos);
     void showAllResep();
-    string craft();
+    pair<string,int> craft();
     void RecipeMatch(Resep resep);
 
     void showCrafting();

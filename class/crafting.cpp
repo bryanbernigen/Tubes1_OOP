@@ -83,7 +83,7 @@ void Crafting::showAllResep(){
 
 
 //TODO Define return + Nontool
-string Crafting::craft(){
+pair<string,int> Crafting::craft(){
     list<Resep>::iterator ptr;
     bool found=true;
     ptr = this->semuaresep.begin();
@@ -124,10 +124,8 @@ string Crafting::craft(){
                 }
             }
             if (found){
-                cout << ptr->getNamaBarang()<< endl;
-                break;
+                return (make_pair(ptr->getNamaBarang(),ptr->getJumlah()));
             }
-            //return new Tool();
         }
         
         
@@ -143,10 +141,9 @@ string Crafting::craft(){
                 }
             }
             if (found){
-                cout << ptr->getNamaBarang()<< endl;
-                break;
+                return (make_pair(ptr->getNamaBarang(),ptr->getJumlah()));
             }
         }
     }
-    return "";  
+    return (make_pair("",0));  
 }
