@@ -249,7 +249,7 @@ void GameState::moveFromInventory(int from, int to, bool toCrafting)
     }
 
     this->inv.showInventory();
-    // this->inv.showcra();
+    
 }
 
 void GameState::moveFromCrafting(int from, int to)

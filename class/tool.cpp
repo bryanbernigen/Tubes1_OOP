@@ -49,8 +49,13 @@ void Tool::useTool()
 
 void Tool::printInfo()
 {
-    cout << "Name: " << this->getName() << endl;
-    cout << "Durability: " << this->getDurability() << endl;
+    cout << "[";
+    cout << setfill('0') << setw(2) << this->getID();
+    cout << " ";
+    cout << setfill('0') << setw(2) << this->getQuantityDurability();
+    cout << "]";
+    //cout << "Name: " << this->getName() << endl;
+    //cout << "Durability: " << this->getDurability() << endl;
 }
 
 Tool * Tool::clone()

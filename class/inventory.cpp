@@ -436,6 +436,7 @@ bool inventory::pileInventory(int idx_src, int idx_dest)
 }
 
 // Output
+<<<<<<< HEAD
 void inventory::printInfoInventory()
 {
     for (int i = 0; i < 27; i++)
@@ -443,7 +444,21 @@ void inventory::printInfoInventory()
         if (!this->isEmpty(i))
         {
             cout << i << endl;
+=======
+void inventory::printInfoInventory() {
+    for(int i = 0; i < 27; i++) {
+        if (!this->isEmpty(i)){
+>>>>>>> 15181167a01eddd96820606a7a9eb6861f4e60bb
             this->inventories[i]->printInfo();
+        }
+        else {
+            cout << "[EMPTY]";
+        }
+        if (i % 9 != 8) {
+            cout << " ";
+        }
+        else {
+            cout << endl;
         }
     }
 }

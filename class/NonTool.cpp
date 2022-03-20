@@ -36,8 +36,13 @@ void NonTool::addItem(int amount)
 
 void NonTool::printInfo()
 {
-    cout << "Name: " << this->getName() << endl;
-    cout << "Quantity: " << this->getQuantity() << endl;
+    cout << "[";
+    cout << setfill('0') << setw(2) << this->getID();
+    cout << " ";
+    cout << setfill('0') << setw(2) << this->getQuantityDurability();
+    cout << "]";
+    //cout << "Name: " << this->getName() << endl;
+    //cout << "Quantity: " << this->getQuantity() << endl;
 }
 
 NonTool * NonTool::clone()
