@@ -51,7 +51,7 @@ void GameState::commandHandler()
     cin >> command;
     if (command == "SHOW")
     {
-        inv.displayInventory();
+        inv.showInventory();
     }
     else if (command == "GIVE")
     {
@@ -112,22 +112,9 @@ void GameState::commandHandler()
     }
     else if (command == "EXPORT")
     {
-        // export();
-
-        // DARI KAKAKNYA, HAPUS KALO UDAH GA PERLU
-        string outputPath;
-        cin >> outputPath;
-        ofstream outputFile(outputPath);
-
-        // hardcode for first test case
-        outputFile << "21:10" << endl;
-        outputFile << "6:1" << endl;
-        for (int i = 2; i < 27; i++)
-        {
-            outputFile << "0:0" << endl;
-        }
-
-        cout << "Exported" << endl;
+        string filename;
+        cin >> filename;
+        inv.exportInventory(filename);
     }
     else
     {
@@ -143,15 +130,15 @@ void GameState::use(int invId)
     // ngecek item yg diambil itu object yang sama(durabilty == 0)
     //cek struktur dict, searchDict ada yg diganti 1->2
     
-
-    
-    Item& it = this->inv.getInventory(invId-1);
+    Item& it = *inv.getInventoryPtr(invId-1);
     if(inv.isTool(invId-1))
     {
         it.setQuantityDurability(it.getQuantityDurability()-1);
         if (it.getQuantityDurability() == 0)
         {
-            inv.takeInventory(it);
+            Item* temp_used;
+            temp_used = inv.takeInventory(it);
+            temp_used->printInfo();
         }
     }
     else 

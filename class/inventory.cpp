@@ -43,6 +43,9 @@ inventory::~inventory() {
 Item& inventory::getInventory(int id) {
     return *this->inventories[id];
 }
+Item* inventory::getInventoryPtr(int id) {
+    return this->inventories[id];
+}
 void inventory::setInventory(int id, Item& value) {
     this->inventories[id] = &value;
 }
@@ -209,6 +212,50 @@ Tool* inventory::takeInventory(Tool& other) {
     return &emptyTool;
 }
 NonTool* inventory::takeInventory(NonTool& other) {
+    if (this->neff > 0) {
+        int i = 0;
+
+        // Skip item with different ID while not out of inventories' bound,
+        // If NonTool, skip if num > quantity
+        // while (this->inventories[i]->getID() != other.getID() && i < this->neff
+        //         && !this->isTool(i) && this->inventories[i]->getQuantityDurability() < other.getQuantityDurability() ) {
+        //     i++;
+        // }
+        while (i < 27) {
+            if (this->inventories[i]->getID() == other.getID()) {
+                if ((this->isTool(i)) || (this->inventories[i]->getQuantityDurability() >= other.getQuantityDurability())) {
+                    break;
+                }
+                else {
+                    i++;
+                }
+            }
+            else {
+                i++;
+            }
+        }
+
+        // Found item with same ID, if NonTool, the quantity is more than num
+        // or i >= inventories size (max 27)
+        if (i < 27) {
+            // Take in slot i
+            int total = this->inventories[i]->getQuantityDurability() - other.getQuantityDurability();
+            if (total > 0) {
+                this->inventories[i]->setQuantityDurability(total);
+            }
+            else if (total == 0) {
+                this->setInventory(this->neff, emptyNonTool);
+                this->nextNeff();
+            }
+            return &other;
+        }
+        else {
+            throw new ItemNotFound();
+        }
+    }
+    return &emptyNonTool;
+}
+Item* inventory::takeInventory(Item& other) {
     if (this->neff > 0) {
         int i = 0;
 
