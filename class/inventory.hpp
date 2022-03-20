@@ -2,56 +2,121 @@
 #define _INVENTORY_HPP_
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <map>
 #include <tuple>
+#include <math.h>
 #include "item.hpp"
 #include "tool.hpp"
 #include "NonTool.hpp"
 using namespace std;
+
+extern NonTool emptyNonTool;
+extern Tool emptyTool;
 
 class inventory
 {
 private:
     map<string,tuple<int,string,string>> itemDict;
     Item** inventories;
-    int neff; // indeks efektif terakhir
+    int neff; // first empty element index
 public:
     // Constructor
     inventory();
-    inventory(const inventory& inv);
+
+    // Copy Constructor
+    inventory(const inventory&);
+
+    // Assignment Operator
+    inventory& operator=(const inventory&);
+    // Destructor
     ~inventory();
 
     // Getter and Setter
-    Item& getInventory(int id);
-    void setInventory(int id, Item& value);
+    Item& getInventory(int);
+    void setInventory(int, Item&);
     int getNeff() const;
+    void nextNeff();
 
     // Predicate checking
     bool isFull();
-    bool isTool(int idx); // If false --> NonTool
+    bool isEmpty(int);
+    bool isItemEmpty(Item&);
+    bool isTool(int); // If false --> NonTool
 
     // Functions
     // Add item to inventory
     // 1. add item, unknown slotID
-    void addInventory(Item& other);
+    void addInventory(Item&);
     // 2. add item to specific inventory ID
-    void addInventory(Item& other, int slotID);
+    void addInventory(Item&, int);
 
     // Take item from inventory
-    bool takeInventory(Item& other);
-    bool takeInventory(int slotID, int quantity);
+    Tool* takeInventory(Tool&);
+    NonTool* takeInventory(NonTool&);
+    Item* takeInventory(int, int);
 
     // Move item from src slot to dest slot
-    bool pileInventory(int idx_src, int idx_dest);
+    bool pileInventory(int, int);
 
     // Output
-    void displayInventory();
-    void exportInventory(string filename);
+    void printInfoInventory();
+    int maxNeff(int);
+    void showInventory();
+    void exportInventory(string);
 
     // Dictionary
-    void addItemDict(string line);
-    Item* searchDict(string nama, int jumlah);
+    void addItemDict(string);
+    Item* searchDict(string, int);
+};
+
+class SlotFullException : public exception 
+{
+public:
+    const char* what() const throw(){
+        return "Inventory is Full!";
+    }
+};
+
+class SlotStorageInsufficient : public exception 
+{
+public:
+    const char* what() const throw(){
+        return "Storage of inventory with slot ID specified is insufficient!";
+    }
+};
+
+class ItemNotMatch : public exception 
+{
+public:
+    const char* what() const throw(){
+        return "Item not match!";
+    }
+};
+
+class SlotInitiallyNotEmpty : public exception 
+{
+public:
+    const char* what() const throw(){
+        return "Slot is initially not empty!";
+    }
+};
+
+class ItemNotFound : public exception 
+{
+public:
+    const char* what() const throw(){
+        return "There's no such item with respective quantity in inventory!";
+    }
+};
+
+class ItemQtInsufficient : public exception
+{
+public:
+    const char* what() const throw(){
+        return "Quantity of available items in inventory is insufficient!";
+    }
 };
 
 #endif

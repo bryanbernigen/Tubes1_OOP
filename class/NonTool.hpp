@@ -15,7 +15,7 @@ public:
     NonTool();
     NonTool(int, string, string);
     NonTool(int, string, string, int);
-    // NonTool(const NonTool&);
+    NonTool(const NonTool&);
     // ~NonTool();
     // NonTool &operator= (const NonTool&);
 

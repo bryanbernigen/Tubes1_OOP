@@ -3,7 +3,7 @@
 NonTool::NonTool() : Item(), quantity(1) {}
 NonTool::NonTool(int id, string name, string type) : Item(id, name, type), quantity(1) {}
 NonTool::NonTool(int id, string name, string type, int qty) : Item(id, name, type), quantity(qty) {}
-
+NonTool::NonTool(const NonTool& other) : Item(other.getID(), other.getName(), other.getType()), quantity(other.getQuantity()) {}
 int NonTool::getQuantity() const { return this->quantity; }
 
 void NonTool::setQuantity(int quantity) {

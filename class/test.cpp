@@ -52,10 +52,13 @@ int main() {
     cout << "2" << temp.getNeff() << endl;
     temp.addInventory(nt4, 2);
     cout << "3" << temp.getNeff() << endl;
-    temp.displayInventory();
+    cout << "~~~~~~~~~" << endl;
+    temp.printInfoInventory();
+    cout << "---------" << endl;
     bool hai = temp.pileInventory(2, 0);
     cout << "hai" << hai << endl;
+    temp.printInfoInventory();
     cout << "4" << temp.getNeff() << endl;
-    temp.displayInventory();
+    temp.showInventory();
     temp.exportInventory("example.txt");
 }
