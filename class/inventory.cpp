@@ -57,7 +57,7 @@ Item *inventory::getInventoryPtr(int id)
 }
 void inventory::setInventory(int id, Item &value)
 {
-    this->inventories[id] = &value;
+    this->inventories[id] = value.clone();
 }
 
 int inventory::getNeff() const
@@ -172,7 +172,7 @@ void inventory::addInventory(Item &other, int slotID)
         // can add item in same slotID
         if (tempItem->getID() == other.getID() && !this->isTool(slotID) && tempItem->getQuantityDurability() + other.getQuantityDurability() <= 64)
         {
-            int total = other.getQuantityDurability() + this->inventories[slotID]->getQuantityDurability();
+            int total = other.getQuantityDurability() + tempItem->getQuantityDurability();
             this->inventories[slotID]->setQuantityDurability(total);
             added = true;
         }
@@ -368,7 +368,7 @@ Item *inventory::takeInventory(Item &other)
 }
 Item *inventory::takeInventory(int slotID, int quantity)
 {
-    Item *tempItemInv = this->inventories[slotID];
+    Item *tempItemInv = this->inventories[slotID]->clone();
     Item *copy = this->inventories[slotID];
     copy->setQuantityDurability(quantity);
     NonTool tempItem(tempItemInv->getID(), tempItemInv->getName(), tempItemInv->getType(), quantity);
@@ -384,6 +384,7 @@ Item *inventory::takeInventory(int slotID, int quantity)
             this->setInventory(slotID, emptyNonTool);
             this->nextNeff();
         }
+        delete tempItemInv;
         return copy;
     }
     else if (slotID < 27 && slotID >= 0 && tempItemInv->getQuantityDurability() < quantity && tempItemInv->getName() != "Empty")
@@ -436,28 +437,24 @@ bool inventory::pileInventory(int idx_src, int idx_dest)
 }
 
 // Output
-<<<<<<< HEAD
 void inventory::printInfoInventory()
 {
     for (int i = 0; i < 27; i++)
     {
         if (!this->isEmpty(i))
         {
-            cout << i << endl;
-=======
-void inventory::printInfoInventory() {
-    for(int i = 0; i < 27; i++) {
-        if (!this->isEmpty(i)){
->>>>>>> 15181167a01eddd96820606a7a9eb6861f4e60bb
             this->inventories[i]->printInfo();
         }
-        else {
+        else
+        {
             cout << "[EMPTY]";
         }
-        if (i % 9 != 8) {
+        if (i % 9 != 8)
+        {
             cout << " ";
         }
-        else {
+        else
+        {
             cout << endl;
         }
     }
@@ -481,17 +478,19 @@ void inventory::showInventory()
     int j;
     for (i = 0; i < 27; i++)
     {
-        cout << "[I";
-        cout << setfill(' ') << setw(2) << i;
-        cout << "]";
-        if (i % 9 != 8)
-        {
-            cout << " ";
-        }
-        else
-        {
-            cout << endl;
-        }
+        cout << i << ". ";
+        this->getInventory(i).printInfo();
+        // cout << "[I";
+        // cout << setfill(' ') << setw(2) << i;
+        // cout << "]";
+        // if (i % 9 != 8)
+        // {
+        //     cout << " ";
+        // }
+        // else
+        // {
+        //     cout << endl;
+        // }
     }
 }
 void inventory::exportInventory(string filename)

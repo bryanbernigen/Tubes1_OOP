@@ -1,4 +1,5 @@
 #include "gameState.hpp"
+#include "exception.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -77,15 +78,15 @@ void GameState::commandHandler()
     }
     else if (command == "MOVE")
     {
-        // move();
+        move();
 
-        // DARI KAKAKNYA, HAPUS KALO UDAH GA PERLU
-        string slotSrc;
-        int slotQty;
-        string slotDest;
-        // need to handle multiple destinations
-        cin >> slotSrc >> slotQty >> slotDest;
-        cout << "TODO" << endl;
+        // // DARI KAKAKNYA, HAPUS KALO UDAH GA PERLU
+        // string slotSrc;
+        // int slotQty;
+        // string slotDest;
+        // // need to handle multiple destinations
+        // cin >> slotSrc >> slotQty >> slotDest;
+        // cout << "TODO" << endl;
     }
     else if (command == "USE")
     {
@@ -105,12 +106,14 @@ void GameState::commandHandler()
     }
     else if (command == "CRAFT")
     {
-        pair<string,int> crafted = craftingTable.craft();
-        if (crafted.first != ""){
+        pair<string, int> crafted = craftingTable.craft();
+        if (crafted.first != "")
+        {
             cout << "Item Created";
             give(crafted.first, crafted.second);
         }
-        else{
+        else
+        {
             cout << "Item Not Created!";
         }
     }
@@ -171,44 +174,54 @@ void GameState::discard(int id_inventory, int jumlah)
 
 void GameState::move()
 {
-    string command, from, to;
-    int N;
-
-    cin >> command >> from >> N;
-    if (from[0] == 'I')
+    try
     {
-        from.erase(0, 1);
-        if (N <= 0)
-            cout << "EXEC HANDLER" << endl; // TODO: EXEC HANDLER
-        else
+        string from, to;
+        int N;
+
+        cin >> from >> N;
+        if (from[0] == 'I')
         {
-            // Distribusikan
-            for (int i = 0; i < N; i++)
+            from.erase(0, 1);
+            if (N <= 0)
+                throw new InvalidSlotAmount();
+            else
             {
-                cin >> to;
-                char mode = to[0];
-                to.erase(0, 1);
-                if (mode == 'C')
-                    this->moveFromInventory(stoi(from), stoi(to), true);
-                else if (mode == 'I')
-                    this->moveFromInventory(stoi(from), stoi(to), false);
-                else
-                    cout << "EXEC HANDLER" << endl; // TODO: EXEC HANDLER
+                // Distribusikan
+                for (int i = 0; i < N; i++)
+                {
+                    cin >> to;
+                    char mode = to[0];
+                    to.erase(0, 1);
+                    if (mode == 'C')
+                        this->moveFromInventory(stoi(from), stoi(to), true);
+                    else if (mode == 'I')
+                        this->moveFromInventory(stoi(from), stoi(to), false);
+                    else
+                        throw new InvalidCommand();
+                }
             }
         }
-    }
-    else if (from[0] == 'C')
-    {
-        from.erase(0, 1);
-        cin >> to;
-        if (to[0] == 'I')
-            this->moveFromCrafting(stoi(from), stoi(to));
+        else if (from[0] == 'C')
+        {
+            from.erase(0, 1);
+            cin >> to;
+            if (to[0] == 'I')
+            {
+                to.erase(0, 1);
+                this->moveFromCrafting(stoi(from), stoi(to));
+            }
+            else
+                throw new InvalidCommand();
+        }
         else
-            cout << "EXEC HANDLER" << endl; // TODO: EXEC HANDLER
+        {
+            throw new InvalidCommand();
+        }
     }
-    else
+    catch (exception *e)
     {
-        cout << "EXEC HANDLER" << endl; // TODO: EXEC HANDLER
+        cout << e->what();
     }
 }
 
@@ -216,64 +229,80 @@ void GameState::moveFromInventory(int from, int to, bool toCrafting)
 {
     if (toCrafting)
     {
-        Item *taken = this->inv.takeInventory(from, 1);
-        if ((taken->getType() == "TOOL"))
+        Item *taken = this->inv.getInventoryPtr(from);
+        if (taken->getType() == "TOOL")
         {
             Tool tmpItem(taken->getID(), taken->getName(), taken->getType(), taken->getQuantityDurability());
             int tmp = this->craftingTable.addToCraftingTable(tmpItem, to);
+
+            Item &empty = emptyTool;
+            this->inv.setInventory(from, empty);
         }
         else
         {
-            NonTool tmpItem(taken->getID(), taken->getName(), taken->getType(), taken->getQuantityDurability());
+            Item *tk = this->inv.takeInventory(from, 1);
+            NonTool tmpItem(tk->getID(), tk->getName(), tk->getType(), 1);
             int tmp = this->craftingTable.addToCraftingTable(tmpItem, to);
         }
     }
     else // to Inventory
     {
+        Item *taken = this->inv.getInventoryPtr(from);
         Item *dest = this->inv.getInventoryPtr(to);
-        Item *taken = this->inv.takeInventory(from, 1);
-        if (dest->getType() == "Empty")
+        if (dest->getType() != "Empty")
             this->inv.pileInventory(from, to);
+
         else if (taken->getType() == "TOOL")
         {
             Tool tmpItem(taken->getID(), taken->getName(), taken->getType(), taken->getQuantityDurability());
             Item &tmp = tmpItem;
             this->inv.setInventory(to, tmp);
+
+            Item &empty = emptyTool;
+            this->inv.setInventory(from, empty);
         }
         else
         {
-            NonTool tmpItem(taken->getID(), taken->getName(), taken->getType(), taken->getQuantityDurability());
+            Item *tk = this->inv.takeInventory(from, 1);
+            NonTool tmpItem(tk->getID(), tk->getName(), tk->getType(), 1);
             Item &tmp = tmpItem;
             this->inv.setInventory(to, tmp);
         }
     }
 
-    this->inv.showInventory();
-    
+    // this->inv.showInventory();
+    // this->craftingTable.showCraftingTable();
 }
 
 void GameState::moveFromCrafting(int from, int to)
 {
-    Item *taken = this->craftingTable.takeItem(from, 1);
+    Item *taken = this->craftingTable.takeItem(from);
     Item *dest = this->inv.getInventoryPtr(to);
     if (taken->getType() == "TOOL")
     {
         Tool tmpItem(taken->getID(), taken->getName(), taken->getType(), taken->getQuantityDurability());
         Item &tmp = tmpItem;
-        if (taken->getType() == "TOOL")
-            this->inv.addInventory(tmp, to);
+        if (dest->getType() != "Empty")
+            cout << "EXEC HANDLER" << endl; // TODO: EXEC HANDLER
         else
             this->inv.setInventory(to, tmp);
     }
     else
     {
-        NonTool tmpItem(taken->getID(), taken->getName(), taken->getType(), taken->getQuantityDurability());
+        int total = taken->getQuantityDurability();
+        NonTool tmpItem(taken->getID(), taken->getName(), taken->getType(), 1);
         Item &tmp = tmpItem;
-        if (taken->getType() == "TOOL")
+        if (dest->getType() != "Empty")
             this->inv.addInventory(tmp, to);
         else
             this->inv.setInventory(to, tmp);
+
+        NonTool tmpNew(taken->getID(), taken->getName(), taken->getType(), total - 1);
+        delete taken;
+        if (total - 1 > 0)
+            int container = this->craftingTable.addToCraftingTable(tmpNew, to);
     }
 
-    this->inv.showInventory();
+    // this->inv.showInventory();
+    // this->craftingTable.showCraftingTable();
 }

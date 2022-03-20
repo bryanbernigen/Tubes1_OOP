@@ -54,19 +54,21 @@ void Tool::printInfo()
     cout << " ";
     cout << setfill('0') << setw(2) << this->getQuantityDurability();
     cout << "]";
-    //cout << "Name: " << this->getName() << endl;
-    //cout << "Durability: " << this->getDurability() << endl;
+    // cout << "Name: " << this->getName() << endl;
+    // cout << "Durability: " << this->getDurability() << endl;
 }
 
-Tool * Tool::clone()
+Tool *Tool::clone()
 {
-    return new Tool(*this); 
+    return new Tool(*this);
 }
-int Tool::getQuantityDurability() {
+int Tool::getQuantityDurability()
+{
     return this->getDurability();
 }
 
-void Tool::setQuantityDurability(int number) {
+void Tool::setQuantityDurability(int number)
+{
     this->setDurability(number);
 }
 
