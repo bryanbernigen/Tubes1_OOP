@@ -22,7 +22,7 @@ GameState::GameState(string config_path)
         string isi_resep;
         string ukuran;
         getline(itemConfigFile, ukuran);
-        isi_resep += ukuran+" ";
+        isi_resep += ukuran + " ";
         int kolom = (int)ukuran[2] - '0';
         int baris = (int)ukuran[0] - '0';
         for (int j = 0; j < baris; j++)
@@ -30,7 +30,7 @@ GameState::GameState(string config_path)
             string line;
             getline(itemConfigFile, line);
             isi_resep += line;
-            for (int i = kolom; i <MAX_KOLOM ; i++)
+            for (int i = kolom; i < MAX_KOLOM; i++)
             {
                 isi_resep += " -";
             }
@@ -39,7 +39,7 @@ GameState::GameState(string config_path)
         }
         string line;
         getline(itemConfigFile, line);
-        isi_resep+=line+" ";
+        isi_resep += line + " ";
         this->craftingTable.addResep(Resep(isi_resep));
     }
 }
@@ -51,7 +51,7 @@ void GameState::commandHandler()
     cin >> command;
     if (command == "SHOW")
     {
-        inv.displayInventory();
+        this->inv.showInventory();
     }
     else if (command == "GIVE")
     {
@@ -91,7 +91,7 @@ void GameState::commandHandler()
     {
         // Get Inventory Id (1..27)
         int invId;
-        cin >> invId ;
+        cin >> invId;
 
         // Use tool
         try
@@ -141,20 +141,18 @@ void GameState::use(int invId)
     // mau pake try n catch atau abc
     // cara ngecek invId valid
     // ngecek item yg diambil itu object yang sama(durabilty == 0)
-    //cek struktur dict, searchDict ada yg diganti 1->2
-    
+    // cek struktur dict, searchDict ada yg diganti 1->2
 
-    
-    Item& it = this->inv.getInventory(invId-1);
-    if(inv.isTool(invId-1))
+    Item &it = this->inv.getInventory(invId - 1);
+    if (inv.isTool(invId - 1))
     {
-        it.setQuantityDurability(it.getQuantityDurability()-1);
+        it.setQuantityDurability(it.getQuantityDurability() - 1);
         if (it.getQuantityDurability() == 0)
         {
-            inv.takeInventory(it);
+            // this->inv.takeInventory(it);
         }
     }
-    else 
+    else
     {
         throw "Choose Tool not Non-Tool";
     }
@@ -177,3 +175,62 @@ void GameState::discard(int id_inventory, int jumlah)
 {
     this->inv.takeInventory(id_inventory, jumlah);
 }
+
+void GameState::move()
+{
+    string command, from, to;
+    int N;
+
+    cin >> command >> from >> N;
+    if (from[0] == 'I')
+    {
+        from.erase(0, 1);
+        if (N <= 0)
+            cout << "EXEC HANDLER" << endl; // TODO: EXEC HANDLER
+        else
+        {
+            // Distribusikan
+            for (int i = 0; i < N; i++)
+            {
+                cin >> to;
+                char mode = to[0];
+                to.erase(0, 1);
+                if (mode == 'C')
+                    this->moveFromInventory(stoi(from), stoi(to), true);
+                else if (mode == 'I')
+                    this->moveFromInventory(stoi(from), stoi(to), false);
+                else
+                    cout << "EXEC HANDLER" << endl; // TODO: EXEC HANDLER
+            }
+        }
+    }
+    else if (from[0] == 'C')
+    {
+        from.erase(0, 1);
+        cin >> to;
+        if (to[0] == 'I')
+            this->moveFromCrafting(stoi(from), stoi(to));
+        else
+            cout << "EXEC HANDLER" << endl; // TODO: EXEC HANDLER
+    }
+    else
+    {
+        cout << "EXEC HANDLER" << endl; // TODO: EXEC HANDLER
+    }
+}
+
+void GameState::moveFromInventory(int from, int dest, bool toCrafting)
+{
+    // Item &tmp = this->inv.getInventory(from);
+    Item *taken = this->inv.takeInventory(from, 1);
+
+    if (toCrafting)
+    {
+    }
+    else // to Inventory
+    {
+        Item *dest = this->inv.getInventoryPtr(dest);
+    }
+}
+
+void moveFromCrafting(int from, int to) {}

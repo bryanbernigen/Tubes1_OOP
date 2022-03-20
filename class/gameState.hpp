@@ -13,18 +13,23 @@ public:
     game.getCraftingTable().addItem()*/
     inventory inv;
     Crafting craftingTable;
+
 public:
     GameState();
     /*Ngisi inventory ama crafting table berdasarkan file di config_path
     di path config_path harus terdapat folder recipe*/
     GameState(string path_item);
     // ~GameState();
-    
+
     void commandHandler();
+
+    void move();
+    void moveFromInventory(int from, int to, bool toCrafting);
+    void moveFromCrafting(int from, int to);
+
     void use(int invId);
     void give(string nama, int jumlah);
     void discard(int id_inventory, int jumlah);
 };
-
 
 #endif
