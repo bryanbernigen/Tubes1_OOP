@@ -35,6 +35,7 @@ public:
 
     // Getter and Setter
     Item& getInventory(int);
+    Item* getInventoryPtr(int);
     void setInventory(int, Item&);
     int getNeff() const;
     void nextNeff();
@@ -55,6 +56,7 @@ public:
     // Take item from inventory
     Tool* takeInventory(Tool&);
     NonTool* takeInventory(NonTool&);
+    Item* takeInventory(Item& other);
     Item* takeInventory(int, int);
 
     // Move item from src slot to dest slot

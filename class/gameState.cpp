@@ -112,22 +112,9 @@ void GameState::commandHandler()
     }
     else if (command == "EXPORT")
     {
-        // export();
-
-        // DARI KAKAKNYA, HAPUS KALO UDAH GA PERLU
-        string outputPath;
-        cin >> outputPath;
-        ofstream outputFile(outputPath);
-
-        // hardcode for first test case
-        outputFile << "21:10" << endl;
-        outputFile << "6:1" << endl;
-        for (int i = 2; i < 27; i++)
-        {
-            outputFile << "0:0" << endl;
-        }
-
-        cout << "Exported" << endl;
+        string filename;
+        cin >> filename;
+        inv.exportInventory(filename);
     }
     else
     {
@@ -143,13 +130,15 @@ void GameState::use(int invId)
     // ngecek item yg diambil itu object yang sama(durabilty == 0)
     // cek struktur dict, searchDict ada yg diganti 1->2
 
-    Item &it = this->inv.getInventory(invId - 1);
+    Item &it = *inv.getInventoryPtr(invId - 1);
     if (inv.isTool(invId - 1))
     {
         it.setQuantityDurability(it.getQuantityDurability() - 1);
         if (it.getQuantityDurability() == 0)
         {
-            // this->inv.takeInventory(it);
+            Item *temp_used;
+            temp_used = inv.takeInventory(it);
+            temp_used->printInfo();
         }
     }
     else
@@ -219,18 +208,68 @@ void GameState::move()
     }
 }
 
-void GameState::moveFromInventory(int from, int dest, bool toCrafting)
+void GameState::moveFromInventory(int from, int to, bool toCrafting)
 {
-    // Item &tmp = this->inv.getInventory(from);
-    Item *taken = this->inv.takeInventory(from, 1);
-
     if (toCrafting)
     {
+        Item *taken = this->inv.takeInventory(from, 1);
+        if ((taken->getType() == "TOOL"))
+        {
+            Tool tmpItem(taken->getID(), taken->getName(), taken->getType(), taken->getQuantityDurability());
+            int tmp = this->craftingTable.addToCraftingTable(tmpItem, to);
+        }
+        else
+        {
+            NonTool tmpItem(taken->getID(), taken->getName(), taken->getType(), taken->getQuantityDurability());
+            int tmp = this->craftingTable.addToCraftingTable(tmpItem, to);
+        }
     }
     else // to Inventory
     {
-        Item *dest = this->inv.getInventoryPtr(dest);
+        Item *dest = this->inv.getInventoryPtr(to);
+        Item *taken = this->inv.takeInventory(from, 1);
+        if (dest->getType() == "Empty")
+            this->inv.pileInventory(from, to);
+        else if (taken->getType() == "TOOL")
+        {
+            Tool tmpItem(taken->getID(), taken->getName(), taken->getType(), taken->getQuantityDurability());
+            Item &tmp = tmpItem;
+            this->inv.setInventory(to, tmp);
+        }
+        else
+        {
+            NonTool tmpItem(taken->getID(), taken->getName(), taken->getType(), taken->getQuantityDurability());
+            Item &tmp = tmpItem;
+            this->inv.setInventory(to, tmp);
+        }
     }
+
+    this->inv.showInventory();
+    // this->inv.showcra();
 }
 
-void moveFromCrafting(int from, int to) {}
+void GameState::moveFromCrafting(int from, int to)
+{
+    Item *taken = this->craftingTable.takeItem(from, 1);
+    Item *dest = this->inv.getInventoryPtr(to);
+    if (taken->getType() == "TOOL")
+    {
+        Tool tmpItem(taken->getID(), taken->getName(), taken->getType(), taken->getQuantityDurability());
+        Item &tmp = tmpItem;
+        if (taken->getType() == "TOOL")
+            this->inv.addInventory(tmp, to);
+        else
+            this->inv.setInventory(to, tmp);
+    }
+    else
+    {
+        NonTool tmpItem(taken->getID(), taken->getName(), taken->getType(), taken->getQuantityDurability());
+        Item &tmp = tmpItem;
+        if (taken->getType() == "TOOL")
+            this->inv.addInventory(tmp, to);
+        else
+            this->inv.setInventory(to, tmp);
+    }
+
+    this->inv.showInventory();
+}
