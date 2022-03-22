@@ -102,11 +102,16 @@ void Crafting::showAllResep()
 
 void Crafting::showCraftingTable()
 {
+    for (int j = 0; j < 24; j++)
+            {
+                cout<<" ";
+            } 
     for (int i = 0; i < 9; i++)
     {
         if (this->slotStatus[i])
         {
             this->craftingtable[i]->printInfo();
+            cout<<this->craftingtable[i]->getType();
         }
         else
         {
@@ -119,15 +124,19 @@ void Crafting::showCraftingTable()
         else
         {
             cout << endl;
+            for (int j = 0; j < 24; j++)
+            {
+                cout<<" ";
+            } 
         }
     }
+    cout<<""<<endl;
 }
 
 // TODO Define return + Nontool
 pair<string, int> Crafting::craft()
 {
     list<Resep>::iterator ptr;
-    bool found = true;
     ptr = this->semuaresep.begin();
     string craftingstring = "";
     string flippedcraftingstring = "";
@@ -142,7 +151,7 @@ pair<string, int> Crafting::craft()
             craftingstring += this->craftingtable[i]->getType();
         }
     }
-
+    
     for (int i = 0; i < 3; i++)
     {
         for (int j = 2; j >= 0; j--)
@@ -157,13 +166,15 @@ pair<string, int> Crafting::craft()
             }
         }
     }
-    for (ptr; ptr != this->semuaresep.end(); ptr++)
+    
+    for (auto& ptr : this->semuaresep)
     {
-        if (craftingstring.find(ptr->getResep()) != string::npos)
+        bool found = true;
+        if (craftingstring.find(ptr.getResep()) != string::npos)
         {
             string::iterator it;
             string str = craftingstring;
-            str.replace(str.find(ptr->getResep()), ptr->getResep().length(), "-");
+            str.replace(str.find(ptr.getResep()), ptr.getResep().length(), "-");
             for (it = str.begin(); it != str.end(); it++)
             {
                 // cout<<*it;
@@ -176,15 +187,16 @@ pair<string, int> Crafting::craft()
             }
             if (found)
             {
-                return (make_pair(ptr->getNamaBarang(), ptr->getJumlah()));
+                return (make_pair(ptr.getNamaBarang(), ptr.getJumlah()));
             }
         }
 
-        if (flippedcraftingstring.find(ptr->getResep()) != string::npos)
+        if (flippedcraftingstring.find(ptr.getResep()) != string::npos)
         {
+            bool found = true;
             string::iterator it;
             string str = flippedcraftingstring;
-            str.replace(str.find(ptr->getResep()), ptr->getResep().length(), "-");
+            str.replace(str.find(ptr.getResep()), ptr.getResep().length(), "-");
             for (it = str.begin(); it != str.end(); it++)
             {
                 // Print current character
@@ -196,7 +208,7 @@ pair<string, int> Crafting::craft()
             }
             if (found)
             {
-                return (make_pair(ptr->getNamaBarang(), ptr->getJumlah()));
+                return (make_pair(ptr.getNamaBarang(), ptr.getJumlah()));
             }
         }
     }

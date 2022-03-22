@@ -42,8 +42,6 @@ void NonTool::printInfo()
     cout << " ";
     cout << setfill('0') << setw(2) << this->getQuantityDurability();
     cout << "]";
-    // cout << "Name: " << this->getName() << endl;
-    // cout << "Quantity: " << this->getQuantity() << endl;
 }
 
 NonTool *NonTool::clone()

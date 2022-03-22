@@ -562,15 +562,15 @@ Item *inventory::searchDict(string Nama, int jumlah)
     }
     else
     {
-        tuple<int, string, string> temp;
+        tuple<int, string, string> temp; //<ID , Type, Tool/NonTool>
         temp = this->itemDict.at(Nama);
-        if (get<2>(temp) == "TOOL")
+        if (get<2>(temp) == "NONTOOL")
         {
-            return new Tool(get<0>(temp), Nama, get<2>(temp));
+            return new NonTool(get<0>(temp), Nama, get<1>(temp), jumlah);    
         }
         else
         {
-            return new NonTool(get<0>(temp), Nama, get<2>(temp), jumlah);
+            return new Tool(get<0>(temp), Nama, get<1>(temp));
         }
     }
 }

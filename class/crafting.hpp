@@ -40,7 +40,7 @@ class QuantityNotMetException : public exception
 public:
     const char *what() const throw()
     {
-        return "Quantity Not Met";
+        return "Quantity Not Met\n";
     }
 };
 
@@ -49,7 +49,7 @@ class SlotEmptyException : public exception
 public:
     const char *what() const throw()
     {
-        return "Slot is Empty";
+        return "Slot is Empty\n";
     }
 };
 
@@ -58,7 +58,7 @@ class SlotFilledException : public exception
 public:
     const char *what() const throw()
     {
-        return "Slot is Filled with other item";
+        return "Slot is Filled with other item\n";
     }
 };
 

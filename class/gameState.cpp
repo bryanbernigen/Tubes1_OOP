@@ -52,7 +52,8 @@ void GameState::commandHandler()
     cin >> command;
     if (command == "SHOW")
     {
-        this->inv.showInventory();
+        this->craftingTable.showCraftingTable();
+        this->inv.printInfoInventory();
     }
     else if (command == "GIVE")
     {
@@ -78,7 +79,12 @@ void GameState::commandHandler()
     }
     else if (command == "MOVE")
     {
-        move();
+        try {
+            move();
+        }
+        catch(exception* e){
+            cout << "test";
+        }
 
         // // DARI KAKAKNYA, HAPUS KALO UDAH GA PERLU
         // string slotSrc;
@@ -107,14 +113,15 @@ void GameState::commandHandler()
     else if (command == "CRAFT")
     {
         pair<string, int> crafted = craftingTable.craft();
+        cout << crafted.first << " " << crafted.second;
         if (crafted.first != "")
         {
-            cout << "Item Created";
+            cout << "Item Created\n";
             give(crafted.first, crafted.second);
         }
         else
         {
-            cout << "Item Not Created!";
+            cout << "Item Not Created!\n";
         }
     }
     else if (command == "EXPORT")
@@ -126,7 +133,7 @@ void GameState::commandHandler()
     else
     {
         // throw ivalidCommand
-        cout << "Invalid command" << endl;
+        cout << "Invalid command\n" << endl;
     }
 }
 
@@ -159,6 +166,7 @@ void GameState::give(string nama, int jumlah)
     try
     {
         Item *it = this->inv.searchDict(nama, jumlah);
+        cout<<it->getType()<<endl;
         this->inv.addInventory(*it);
     }
     catch (const char *e)
@@ -174,54 +182,50 @@ void GameState::discard(int id_inventory, int jumlah)
 
 void GameState::move()
 {
-    try
-    {
-        string from, to;
-        int N;
+    string from, to;
+    int N;
 
-        cin >> from >> N;
-        if (from[0] == 'I')
+    cin >> from >> N;
+    if (from[0] == 'I')
+    {
+        from.erase(0, 1);
+        if (N <= 0)
         {
-            from.erase(0, 1);
-            if (N <= 0)
-                throw new InvalidSlotAmount();
-            else
-            {
-                // Distribusikan
-                for (int i = 0; i < N; i++)
-                {
-                    cin >> to;
-                    char mode = to[0];
-                    to.erase(0, 1);
-                    if (mode == 'C')
-                        this->moveFromInventory(stoi(from), stoi(to), true);
-                    else if (mode == 'I')
-                        this->moveFromInventory(stoi(from), stoi(to), false);
-                    else
-                        throw new InvalidCommand();
-                }
-            }
-        }
-        else if (from[0] == 'C')
-        {
-            from.erase(0, 1);
-            cin >> to;
-            if (to[0] == 'I')
-            {
-                to.erase(0, 1);
-                this->moveFromCrafting(stoi(from), stoi(to));
-            }
-            else
-                throw new InvalidCommand();
+            cout << N << endl;
+            throw new InvalidSlotAmount();
         }
         else
         {
-            throw new InvalidCommand();
+            // Distribusikan
+            for (int i = 0; i < N; i++)
+            {
+                cin >> to;
+                char mode = to[0];
+                to.erase(0, 1);
+                if (mode == 'C')
+                    this->moveFromInventory(stoi(from), stoi(to), true);
+                else if (mode == 'I')
+                    this->moveFromInventory(stoi(from), stoi(to), false);
+                else
+                    throw new InvalidCommand();
+            }
         }
     }
-    catch (exception *e)
+    else if (from[0] == 'C')
     {
-        cout << e->what();
+        from.erase(0, 1);
+        cin >> to;
+        if (to[0] == 'I')
+        {
+            to.erase(0, 1);
+            this->moveFromCrafting(stoi(from), stoi(to));
+        }
+        else
+            throw new InvalidCommand();
+    }
+    else
+    {
+        throw new InvalidCommand();
     }
 }
 
