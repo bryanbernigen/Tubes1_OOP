@@ -187,18 +187,50 @@ void GameState::move()
         }
         else
         {
+            
             // Distribusikan
-            for (int i = 0; i < N; i++)
+            string namaSlot;
+            vector<string> slots;
+            string temp;
+
+            getline(cin, namaSlot);
+            namaSlot.erase(0,1);
+            for(auto ch : namaSlot)
             {
-                cin >> to;
+                if (ch == ' ')
+                {
+                    slots.push_back(temp);
+                    temp = "";
+                    continue;
+                }
+                temp += ch;             
+                
+            }            
+            slots.push_back(temp);
+            
+            int remainingItem = N;
+            bool isFull = false;
+            int i = 0;
+
+            while(!isFull && remainingItem > 0)
+            {
+                to = slots[i%slots.size()];
+                i++;
+                remainingItem--;              
                 char mode = to[0];
                 to.erase(0, 1);
                 if (mode == 'C')
+                {
                     this->moveFromInventory(stoi(from), stoi(to), true);
+                }
                 else if (mode == 'I')
+                {
                     this->moveFromInventory(stoi(from), stoi(to), false);
+                }
                 else
+                {
                     throw new InvalidCommand();
+                }
             }
         }
     }
@@ -244,10 +276,10 @@ void GameState::moveFromInventory(int from, int to, bool toCrafting)
     {
         Item *taken = this->inv.getInventoryPtr(from);
         Item *dest = this->inv.getInventoryPtr(to);
-        if (dest->getType() != "Empty")
-            this->inv.pileInventory(from, to);
-
-        else if (taken->getType() == "TOOL")
+        // if (dest->getType() != "Empty")
+        //     this->inv.pileInventory(from, to);
+//else 
+        if (taken->getType() == "TOOL")
         {
             Tool tmpItem(taken->getID(), taken->getName(), taken->getType(), taken->getQuantityDurability());
             Item &tmp = tmpItem;
@@ -259,9 +291,9 @@ void GameState::moveFromInventory(int from, int to, bool toCrafting)
         else
         {
             Item *tk = this->inv.takeInventory(from, 1);
-            NonTool tmpItem(tk->getID(), tk->getName(), tk->getType(), 1);
+            NonTool tmpItem(tk->getID(), tk->getName(), tk->getType(),1);
             Item &tmp = tmpItem;
-            this->inv.setInventory(to, tmp);
+            this->inv.addInventory(tmp, to);
         }
     }
 
