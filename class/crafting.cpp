@@ -138,6 +138,45 @@ pair<string, int> Crafting::craft()
 {
     list<Resep>::iterator ptr;
     ptr = this->semuaresep.begin();
+    int Tools = 0;
+    int NonTools = 0;
+    int ToolId = -1;
+    int dur = 0;
+    for (int i = 0; i < 9 ; i++ ){
+        if(this->slotStatus[i]){
+            if(this->craftingtable[i]->getType() == "TOOLS"){
+                Tools++;
+            }
+            else{
+                NonTools++;
+            }
+        }
+    }
+    if (Tools == 1){
+        return (make_pair("", 0));
+    }
+
+    if (Tools == 2 && NonTools == 0){
+        for(int i = 0 ; i < 9 ; i++){
+            if(this->slotStatus[i]){
+                dur += this->craftingtable[i]->getQuantityDurability();
+                if(ToolId == -1){
+                    ToolId = this->craftingtable[i]->getID();
+                    
+                }
+                else{
+                    if (ToolId == this->craftingtable[i]->getID()){
+                        dur = min(dur,10);
+                        return (make_pair(this->craftingtable[i]->getName(), dur));
+                    }
+                    else{
+                        throw new ToolNotMatchExc();
+                    }
+                }
+            }
+        }
+    }
+
     string craftingstring = "";
     string flippedcraftingstring = "";
     for (int i = 0; i < 9; i++)

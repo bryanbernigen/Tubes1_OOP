@@ -126,7 +126,7 @@ void inventory::addInventory(Item &other)
     // If initially empty, skip
     while ((i >= 0 && i < 27))
     {
-        cout << "masuk" << endl;
+        cout << this->inventories[i]->getQuantityDurability() << " + " << other.getQuantityDurability() << " is " << this->inventories[i]->getQuantityDurability() + other.getQuantityDurability() << endl;
         if (this->isEmpty(i) || (!this->isTool(i) && this->inventories[i]->getID() == other.getID() && this->inventories[i]->getQuantityDurability() + other.getQuantityDurability() <= 64))
         {
             break;
@@ -135,9 +135,7 @@ void inventory::addInventory(Item &other)
         {
             i++;
         }
-        cout << "keluar" << endl;
     }
-    cout << "ini i : " << i << endl;
 
     // Found item with same ID, if NonTool the sum doesn't exceeds 64, not Tool
     // or i >= inventories size (max 27)
@@ -170,7 +168,7 @@ void inventory::addInventory(Item &other, int slotID)
         Item *tempItem = this->inventories[slotID];
         // If the item in slotID inventory is same item, NonTool, and addition result <= 64
         // can add item in same slotID
-        if (tempItem->getID() == other.getID() && !this->isTool(slotID) && tempItem->getQuantityDurability() + other.getQuantityDurability() <= 64)
+        if (tempItem->getID() == other.getID() && !this->isTool(slotID) && (tempItem->getQuantityDurability() + other.getQuantityDurability() <= 64))
         {
             int total = other.getQuantityDurability() + tempItem->getQuantityDurability();
             this->inventories[slotID]->setQuantityDurability(total);
@@ -558,7 +556,7 @@ Item *inventory::searchDict(string Nama, int jumlah)
     */
     if (this->itemDict.find(Nama) == this->itemDict.end())
     {
-        throw "Item not Found";
+        throw new ItemNotExist();
     }
     else
     {
@@ -570,7 +568,7 @@ Item *inventory::searchDict(string Nama, int jumlah)
         }
         else
         {
-            return new Tool(get<0>(temp), Nama, get<1>(temp));
+            return new Tool(get<0>(temp), Nama, get<1>(temp),jumlah);
         }
     }
 }

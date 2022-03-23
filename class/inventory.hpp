@@ -10,6 +10,7 @@
 #include "item.hpp"
 #include "tool.hpp"
 #include "NonTool.hpp"
+#include "exception.hpp"
 using namespace std;
 
 extern NonTool emptyNonTool;
@@ -73,52 +74,5 @@ public:
     Item* searchDict(string, int);
 };
 
-class SlotFullException : public exception 
-{
-public:
-    const char* what() const throw(){
-        return "Inventory is Full!";
-    }
-};
-
-class SlotStorageInsufficient : public exception 
-{
-public:
-    const char* what() const throw(){
-        return "Storage of inventory with slot ID specified is insufficient!";
-    }
-};
-
-class ItemNotMatch : public exception 
-{
-public:
-    const char* what() const throw(){
-        return "Item not match!";
-    }
-};
-
-class SlotInitiallyNotEmpty : public exception 
-{
-public:
-    const char* what() const throw(){
-        return "Slot is initially not empty!";
-    }
-};
-
-class ItemNotFound : public exception 
-{
-public:
-    const char* what() const throw(){
-        return "There's no such item with respective quantity in inventory!";
-    }
-};
-
-class ItemQtInsufficient : public exception
-{
-public:
-    const char* what() const throw(){
-        return "Quantity of available items in inventory is insufficient!";
-    }
-};
 
 #endif

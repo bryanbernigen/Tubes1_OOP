@@ -7,6 +7,7 @@
 #include "item.hpp"
 #include "tool.hpp"
 #include "NonTool.hpp"
+#include "exception.hpp"
 #include <iostream>
 using namespace std;
 
@@ -35,31 +36,9 @@ public:
     void showCrafting();
 };
 
-class QuantityNotMetException : public exception
-{
-public:
-    const char *what() const throw()
-    {
-        return "Quantity Not Met\n";
-    }
-};
 
-class SlotEmptyException : public exception
-{
-public:
-    const char *what() const throw()
-    {
-        return "Slot is Empty\n";
-    }
-};
-
-class SlotFilledException : public exception
-{
-public:
-    const char *what() const throw()
-    {
-        return "Slot is Filled with other item\n";
-    }
-};
 
 #endif
+
+// MOVE I0 2 C0 C1 C2 (Works)
+// MOVE I0 64 I1 I2

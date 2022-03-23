@@ -6,7 +6,7 @@ using namespace std;
 class InvalidCommand : public exception
 {
 public:
-    const char *what() const throw()
+    const char* what() const throw()
     {
         return "We dont know what are you saying?! Please try it again.\n";
     }
@@ -19,6 +19,120 @@ public:
     {
         return "You input an invalid slot amount! Please try it again.\n";
     }
+};
+
+class QuantityNotMetException : public exception
+{
+public:
+    const char *what() const throw()
+    {
+        return "Quantity Not Met\n";
+    }
+};
+
+class SlotEmptyException : public exception
+{
+public:
+    const char *what() const throw()
+    {
+        return "Slot is Empty\n";
+    }
+};
+
+class SlotFilledException : public exception
+{
+public:
+    const char *what() const throw()
+    {
+        return "Slot is Filled with other item\n";
+    }
+};
+
+class SlotFullException : public exception 
+{
+public:
+    const char* what() const throw(){
+        return "Inventory is Full!";
+    }
+};
+
+class SlotStorageInsufficient : public exception 
+{
+public:
+    const char* what() const throw(){
+        return "Storage of inventory with slot ID specified is insufficient!";
+    }
+};
+
+class ItemNotMatch : public exception 
+{
+public:
+    const char* what() const throw(){
+        return "Item not match!";
+    }
+};
+
+class SlotInitiallyNotEmpty : public exception 
+{
+public:
+    const char* what() const throw(){
+        return "Slot is initially not empty!";
+    }
+};
+
+class ItemNotFound : public exception 
+{
+public:
+    const char* what() const throw(){
+        return "There's no such item with respective quantity in inventory!";
+    }
+};
+
+class ItemQtInsufficient : public exception
+{
+public:
+    const char* what() const throw(){
+        return "Quantity of available items in inventory is insufficient!";
+    }
+};
+
+class ItemNotExist : public exception
+{
+public:
+    const char* what() const throw(){
+        return "Item Not Exists!";
+    }
+};
+
+class ToolNotMatchExc : public exception
+{
+public:
+    const char *what() const throw()
+    {
+        return "Tool doesn't match!.\n";
+    }
+};
+
+
+class InvalidUseCommand: public exception
+{
+    protected:
+    /** Error message.
+     */
+    string msg_;
+    public:
+        /* Constructor (C strings).
+        *  @param message C-style string error message.
+        *                 The string contents are copied upon construction.
+        *                 Hence, responsibility for deleting the char* lies
+        *                 with the caller. 
+        */
+        explicit InvalidUseCommand() : msg_("Cannot use command USE, check item type first !!!\n") {;}
+
+        virtual const char* what() const noexcept 
+        {
+            return msg_.c_str();
+        }
 };
 
 #endif

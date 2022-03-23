@@ -79,36 +79,21 @@ void GameState::commandHandler()
     }
     else if (command == "MOVE")
     {
-        try {
-            move();
-        }
-        catch(exception* e){
-            cout << "test";
-        }
-
-        // // DARI KAKAKNYA, HAPUS KALO UDAH GA PERLU
-        // string slotSrc;
-        // int slotQty;
-        // string slotDest;
-        // // need to handle multiple destinations
-        // cin >> slotSrc >> slotQty >> slotDest;
-        // cout << "TODO" << endl;
+        move();
     }
     else if (command == "USE")
     {
         // Get Inventory Id (1..27)
         int invId;
-        cin >> invId;
 
-        // Use tool
-        try
+        // Use tool 
+        while (!(cin >> invId))
         {
-            use(invId);
-        }
-        catch (const char *e)
-        {
-            std::cerr << e << '\n';
-        }
+            throw new InvalidCommand();
+            cin.clear();
+        }       
+        use(invId);
+        
     }
     else if (command == "CRAFT")
     {
@@ -133,7 +118,7 @@ void GameState::commandHandler()
     else
     {
         // throw ivalidCommand
-        cout << "Invalid command\n" << endl;
+        throw new InvalidCommand();
     }
 }
 
@@ -157,22 +142,16 @@ void GameState::use(int invId)
     }
     else
     {
-        throw "Choose Tool not Non-Tool";
+        throw new InvalidUseCommand();
     }
 }
 
 void GameState::give(string nama, int jumlah)
 {
-    try
-    {
-        Item *it = this->inv.searchDict(nama, jumlah);
-        cout<<it->getType()<<endl;
-        this->inv.addInventory(*it);
-    }
-    catch (const char *e)
-    {
-        std::cerr << e << '\n';
-    }
+    Item *it = this->inv.searchDict(nama, jumlah);
+    cout<<it->getType()<<endl;
+    this->inv.addInventory(*it);
+    
 }
 
 void GameState::discard(int id_inventory, int jumlah)
@@ -185,13 +164,25 @@ void GameState::move()
     string from, to;
     int N;
 
-    cin >> from >> N;
+    //First param input validator
+    while (!(cin >> from))
+    {
+        throw new InvalidCommand();
+        cin.clear();
+    }
+
+    //String input validator
+    while (!(cin >> N))
+    {
+        throw new InvalidCommand();
+        cin.clear();
+    }
+
     if (from[0] == 'I')
     {
         from.erase(0, 1);
         if (N <= 0)
         {
-            cout << N << endl;
             throw new InvalidSlotAmount();
         }
         else
