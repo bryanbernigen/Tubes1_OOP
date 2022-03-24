@@ -26,6 +26,7 @@ public:
     void move();
     void moveFromInventory(int from, int to, bool toCrafting);
     void moveFromCrafting(int from, int to);
+    void moveTo(int from, int to, bool fromCrafting, bool toCrafting);
 
     void use(int invId);
     void give(string nama, int jumlah);

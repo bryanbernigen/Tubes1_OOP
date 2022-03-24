@@ -16,14 +16,13 @@ Crafting::~Crafting()
     delete[] this->slotStatus;
 }
 
-// Return 0 if succesful, returns integer of remaining quantity not put into slot(>64), or throw exception if not compatible
-// Caller needs to handle item quantity (or destruct if 0)
-int Crafting::addToCraftingTable(Item &item, int pos)
+// Add Item to crafting table, if not successful (Not same Type or Slot Full throws exception)
+void Crafting::addToCraftingTable(Item &item, int pos)
 {
     // Item already exist in that slot
     if (this->slotStatus[pos])
     {
-        if (this->craftingtable[pos]->getType() != item.getType())
+        if (this->craftingtable[pos]->getType() != item.getType() || this->craftingtable[pos]->getType() == "TOOL")
             throw new SlotFilledException();
         else
         {
@@ -31,12 +30,11 @@ int Crafting::addToCraftingTable(Item &item, int pos)
             if (total > 64)
             {
                 this->craftingtable[pos]->setQuantityDurability(64);
-                return (total % 64);
+                throw new SlotFullException();
             }
             else
             {
                 this->craftingtable[pos]->setQuantityDurability(total);
-                return 0;
             }
         }
     }
@@ -45,7 +43,6 @@ int Crafting::addToCraftingTable(Item &item, int pos)
         this->craftingtable[pos] = item.clone();
         this->slotStatus[pos] = true;
     }
-    return -1;
 }
 
 // Returns pointer to item or exception
@@ -53,15 +50,15 @@ Item *Crafting::takeItem(int pos, int quantity)
 {
     if (!this->slotStatus[pos])
         throw new SlotEmptyException();
-    if (this->craftingtable[pos]->getQuantityDurability() < quantity)
-        throw new QuantityNotMetException();
-    if (this->craftingtable[pos]->getQuantityDurability() == quantity)
+    if (this->craftingtable[pos]->getQuantityDurability() == quantity || this->craftingtable[pos]->getType() == "TOOL")
     {
         this->slotStatus[pos] = false;
         Item *returnedItem = this->craftingtable[pos]->clone();
         delete this->craftingtable[pos];
         return returnedItem;
     }
+    if (this->craftingtable[pos]->getQuantityDurability() < quantity)
+        throw new QuantityNotMetException();
     else
     {
         Item *returnedItem = this->craftingtable[pos]->clone();
@@ -81,6 +78,17 @@ Item *Crafting::takeItem(int pos)
         this->slotStatus[pos] = false;
         Item *returnedItem = this->craftingtable[pos]->clone();
         delete this->craftingtable[pos];
+        return returnedItem;
+    }
+}
+
+Item *Crafting::getCrafting(int pos)
+{
+    if (!this->slotStatus[pos])
+        throw new SlotEmptyException();
+    else
+    {
+        Item *returnedItem = this->craftingtable[pos];
         return returnedItem;
     }
 }

@@ -16,6 +16,12 @@ using namespace std;
 
 int main()
 {
+/*
+GIVE WOODEN_SWORD 3
+SHOW
+MOVE I0 1 I1
+*/
+
     string configPath = "./config";
     string itemConfigPath = configPath + "/item.txt";
     // Configure Game
