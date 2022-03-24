@@ -144,14 +144,12 @@ void inventory::addInventory(Item &other)
                 this->setInventory(this->neff, other);
                 if  (other.getQuantityDurability() > 64) {
                     // item quantity exceeds 64, limit to 64
-                    cout << " satu " << endl;
                     this->inventories[i]->setQuantityDurability(64);
                     other.setQuantityDurability(other.getQuantityDurability()-64);
                     numItem -= 64;
                 }
                 else {
                     // item quantity less than 64
-                    cout << " dua " << endl;
                     this->inventories[i]->setQuantityDurability(numItem);
                     numItem -= other.getQuantityDurability();
                 }
@@ -161,7 +159,6 @@ void inventory::addInventory(Item &other)
                 int freeSlot = 64 - this->inventories[i]->getQuantityDurability();
                 if (other.getQuantityDurability() <= freeSlot) {
                     // directly enter without partitioning
-                    cout << " tiga " << other.getQuantityDurability() << endl;
                     int total = this->inventories[i]->getQuantityDurability() + other.getQuantityDurability();
                     this->inventories[i]->setQuantityDurability(total);
                     other.setQuantityDurability(other.getQuantityDurability()-total);
@@ -169,7 +166,6 @@ void inventory::addInventory(Item &other)
                 }
                 else {
                     // partition. Fill first (as much as freeSlot)
-                    cout << " empat " << other.getQuantityDurability() << endl;
                     int total = this->inventories[i]->getQuantityDurability() + freeSlot;
                     this->inventories[i]->setQuantityDurability(total);
                     other.setQuantityDurability(other.getQuantityDurability()-freeSlot);
@@ -427,10 +423,12 @@ Item *inventory::takeInventory(int slotID, int quantity)
     }
     else if (slotID < 27 && slotID >= 0 && tempItemInv->getQuantityDurability() < quantity && tempItemInv->getName() != "Empty")
     {
+        delete tempItemInv;
         throw new ItemQtInsufficient();
     }
     else
     {
+        delete tempItemInv;
         throw new ItemNotFound();
     }
 

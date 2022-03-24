@@ -336,7 +336,13 @@ void GameState::moveTo(int from, int to, bool fromCrafting, bool toCrafting){
         taken = this->craftingTable.takeItem(from,1);
     }
     else{
-        taken = this->inv.takeInventory(from, 1);
+        Item* temp = this->inv.getInventoryPtr(from);
+        if (temp->getType() == "TOOL"){
+            taken = this->inv.takeInventory(from,temp->getQuantityDurability());
+        }
+        else{
+            taken = this->inv.takeInventory(from,1);
+        }
     }
     
     if (taken->getType() == "TOOL"){

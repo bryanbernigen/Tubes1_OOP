@@ -52,7 +52,7 @@ class SlotFullException : public exception
 {
 public:
     const char* what() const throw(){
-        return "Inventory is Full!";
+        return "Inventory is Full!\n";
     }
 };
 
@@ -60,7 +60,7 @@ class SlotStorageInsufficient : public exception
 {
 public:
     const char* what() const throw(){
-        return "Storage of inventory with slot ID specified is insufficient!";
+        return "Storage of inventory with slot ID specified is insufficient!\n";
     }
 };
 
@@ -68,7 +68,7 @@ class ItemNotMatch : public exception
 {
 public:
     const char* what() const throw(){
-        return "Item not match!";
+        return "Item not match!\n";
     }
 };
 
@@ -76,7 +76,7 @@ class SlotInitiallyNotEmpty : public exception
 {
 public:
     const char* what() const throw(){
-        return "Slot is initially not empty!";
+        return "Slot is initially not empty!\n";
     }
 };
 
@@ -84,7 +84,7 @@ class ItemNotFound : public exception
 {
 public:
     const char* what() const throw(){
-        return "There's no such item with respective quantity in inventory!";
+        return "There's no such item with respective quantity in inventory!\n";
     }
 };
 
@@ -100,7 +100,7 @@ class ItemNotExist : public exception
 {
 public:
     const char* what() const throw(){
-        return "Item Not Exists!";
+        return "Item Not Exists!\n";
     }
 };
 
