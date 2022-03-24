@@ -16,12 +16,6 @@ using namespace std;
 
 int main()
 {
-/*
-GIVE WOODEN_SWORD 3
-SHOW
-MOVE I0 1 I1
-*/
-
     string configPath = "./config";
     string itemConfigPath = configPath + "/item.txt";
     // Configure Game
@@ -29,14 +23,13 @@ MOVE I0 1 I1
 
     string command;
     while (1){
+        cout << endl;
         try
         {
             game.commandHandler();
         }        
         catch (exception* e)
         {
-            // system("pause");
-            // cout << "test";
             cout << e->what();
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');

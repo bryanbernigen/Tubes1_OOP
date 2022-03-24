@@ -19,6 +19,9 @@ Crafting::~Crafting()
 // Add Item to crafting table, if not successful (Not same Type or Slot Full throws exception)
 void Crafting::addToCraftingTable(Item &item, int pos)
 {
+    if (pos < 0 || pos > 8){
+        throw new IndexOutOfRange(pos, "crafting table");
+    }
     // Item already exist in that slot
     if (this->slotStatus[pos])
     {
@@ -48,6 +51,9 @@ void Crafting::addToCraftingTable(Item &item, int pos)
 // Returns pointer to item or exception
 Item *Crafting::takeItem(int pos, int quantity)
 {
+    if (pos < 0 || pos > 8){
+        throw new IndexOutOfRange(pos, "crafting table");
+    }
     if (!this->slotStatus[pos])
         throw new SlotEmptyException();
     if (this->craftingtable[pos]->getQuantityDurability() == quantity || this->craftingtable[pos]->getType() == "TOOL")
@@ -71,6 +77,9 @@ Item *Crafting::takeItem(int pos, int quantity)
 // Returns pointer to item or exception
 Item *Crafting::takeItem(int pos)
 {
+    if (pos < 0 || pos > 8){
+        throw new IndexOutOfRange(pos, "crafting table");
+    }
     if (!this->slotStatus[pos])
         throw new SlotEmptyException();
     else
@@ -84,6 +93,9 @@ Item *Crafting::takeItem(int pos)
 
 Item *Crafting::getCrafting(int pos)
 {
+    if (pos < 0 || pos > 8){
+        throw new IndexOutOfRange(pos, "crafting table");
+    }
     if (!this->slotStatus[pos])
         throw new SlotEmptyException();
     else
@@ -150,9 +162,10 @@ pair<string, int> Crafting::craft()
     int NonTools = 0;
     int ToolId = -1;
     int dur = 0;
+    int minQnt = 64;
     for (int i = 0; i < 9 ; i++ ){
         if(this->slotStatus[i]){
-            if(this->craftingtable[i]->getType() == "TOOLS"){
+            if(this->craftingtable[i]->getType() == "TOOL"){
                 Tools++;
             }
             else{
@@ -161,7 +174,7 @@ pair<string, int> Crafting::craft()
         }
     }
     if (Tools == 1){
-        return (make_pair("", 0));
+        throw new NoneCreated();
     }
 
     if (Tools == 2 && NonTools == 0){
@@ -175,7 +188,9 @@ pair<string, int> Crafting::craft()
                 else{
                     if (ToolId == this->craftingtable[i]->getID()){
                         dur = min(dur,10);
-                        return (make_pair(this->craftingtable[i]->getName(), dur));
+                        pair<string, int> temp_pair = make_pair(this->craftingtable[i]->getName(), dur);
+                        takeAll(1);
+                        return (temp_pair);
                     }
                     else{
                         throw new ToolNotMatchExc();
@@ -184,7 +199,6 @@ pair<string, int> Crafting::craft()
             }
         }
     }
-
     string craftingstring = "";
     string flippedcraftingstring = "";
     for (int i = 0; i < 9; i++)
@@ -195,6 +209,9 @@ pair<string, int> Crafting::craft()
         }
         else
         {
+            if (this->craftingtable[i]->getQuantityDurability() < minQnt){
+                minQnt = this->craftingtable[i]->getQuantityDurability();
+            }
             craftingstring += this->craftingtable[i]->getType();
         }
     }
@@ -224,8 +241,6 @@ pair<string, int> Crafting::craft()
             str.replace(str.find(ptr.getResep()), ptr.getResep().length(), "-");
             for (it = str.begin(); it != str.end(); it++)
             {
-                // cout<<*it;
-                // Print current character
                 if (*it != '-')
                 {
                     found = false;
@@ -234,7 +249,8 @@ pair<string, int> Crafting::craft()
             }
             if (found)
             {
-                return (make_pair(ptr.getNamaBarang(), ptr.getJumlah()));
+                takeAll(minQnt);
+                return (make_pair(ptr.getNamaBarang(), ptr.getJumlah()*minQnt));
             }
         }
 
@@ -255,9 +271,16 @@ pair<string, int> Crafting::craft()
             }
             if (found)
             {
-                return (make_pair(ptr.getNamaBarang(), ptr.getJumlah()));
+                takeAll(minQnt);
+                return (make_pair(ptr.getNamaBarang(), ptr.getJumlah()*minQnt));
             }
         }
     }
-    return (make_pair("", 0));
+    throw new NoneCreated();
+}
+
+void Crafting::takeAll(int Qnt){
+    for (int i = 0 ; i < 9 ; i++){
+        if (this->slotStatus[i]) takeItem(i,Qnt);
+    }
 }

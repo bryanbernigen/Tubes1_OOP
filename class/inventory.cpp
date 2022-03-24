@@ -49,14 +49,23 @@ inventory::~inventory()
 // Getter and Setter
 Item &inventory::getInventory(int id)
 {
+    if (id < 0 || id > 26){
+        throw new IndexOutOfRange(id, "inventory");
+    }
     return *this->inventories[id];
 }
 Item *inventory::getInventoryPtr(int id)
 {
+    if (id < 0 || id > 26){
+        throw new IndexOutOfRange(id, "inventory");
+    }
     return this->inventories[id];
 }
 void inventory::setInventory(int id, Item &value)
 {
+    if (id < 0 || id > 26){
+        throw new IndexOutOfRange(id, "inventory");
+    }
     this->inventories[id] = value.clone();
 }
 
@@ -197,6 +206,9 @@ void inventory::addInventory(Item &other)
 // 2. add item to specific inventory ID
 void inventory::addInventory(Item &other, int slotID)
 {
+    if (slotID < 0 || slotID > 26){
+        throw new IndexOutOfRange(slotID, "inventory");
+    }
     bool added = false;
     // add to currently present item
     if (slotID >= 0 && slotID < 27 && !isEmpty(slotID))
@@ -402,6 +414,9 @@ Item *inventory::takeInventory(Item &other)
 }
 Item *inventory::takeInventory(int slotID, int quantity)
 {
+    if (slotID < 0 || slotID > 26){
+        throw new IndexOutOfRange(slotID, "inventory");
+    }
     Item *tempItemInv = this->inventories[slotID]->clone();
     Item *copy = this->inventories[slotID];
     copy->setQuantityDurability(quantity);
@@ -438,6 +453,12 @@ Item *inventory::takeInventory(int slotID, int quantity)
 // Move item from src slot to dest slot
 bool inventory::pileInventory(int idx_src, int idx_dest)
 {
+    if (idx_src < 0 || idx_src > 26){
+        throw new IndexOutOfRange(idx_src, "inventory");
+    }
+    if (idx_dest < 0 || idx_dest > 26){
+        throw new IndexOutOfRange(idx_dest, "inventory");
+    }
     // Only take if NonTool, shares same ID, and total quantity <= 64
     Item *temp_src = this->inventories[idx_src];
     Item *temp_dest = this->inventories[idx_dest];
@@ -567,7 +588,7 @@ void inventory::addItemDict(string line)
     {
         temp[2] = temp[3];
     }
-    if (temp[2] == "-")
+    if (temp[2] == "-" || temp[2]=="LOG")
     {
         temp[2] = temp[1];
     }

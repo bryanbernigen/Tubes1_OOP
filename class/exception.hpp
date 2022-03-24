@@ -88,11 +88,36 @@ public:
     }
 };
 
+class IndexOutOfRange : public exception 
+{
+private:
+    int index;
+    string location;
+public:
+    IndexOutOfRange(int idx, string loc):exception(){
+        index = idx;
+        location = loc;
+    }
+    const char* what() const throw(){
+        string out;
+        out = "Index " + to_string(index) + " in " + location + " Out Of Range!\n";
+        return out.c_str();
+    }
+};
+
 class ItemQtInsufficient : public exception
 {
 public:
     const char* what() const throw(){
         return "Quantity of available items in inventory is insufficient!";
+    }
+};
+
+class NoneCreated : public exception
+{
+public:
+    const char* what() const throw(){
+        return "There are no item can be created!\n";
     }
 };
 

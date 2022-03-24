@@ -33,7 +33,7 @@ public:
     void showCraftingTable();
     pair<string,int> craft();
     void RecipeMatch(Resep resep);
-
+    void takeAll(int Qnt);
     void showCrafting();
 };
 
