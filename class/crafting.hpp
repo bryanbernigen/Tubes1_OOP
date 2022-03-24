@@ -40,5 +40,3 @@ public:
 
 #endif
 
-// MOVE I0 2 C0 C1 C2 (Works)
-// MOVE I0 64 I1 I2
