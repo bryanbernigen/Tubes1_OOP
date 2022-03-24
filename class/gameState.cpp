@@ -124,6 +124,8 @@ void GameState::commandHandler()
     {
         string filename;
         cin >> filename;
+        cout<< "Exporting at: "<<filename<<endl;
+        filename+=".txt";
         inv.exportInventory(filename);
     }
     else

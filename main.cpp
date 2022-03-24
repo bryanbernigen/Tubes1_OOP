@@ -20,7 +20,6 @@ int main()
     string itemConfigPath = configPath + "/item.txt";
     // Configure Game
     GameState game(configPath);
-
     string command;
     while (1){
         cout << endl;

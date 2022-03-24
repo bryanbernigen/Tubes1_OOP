@@ -66,7 +66,6 @@ public:
 
     // Output
     void printInfoInventory();
-    int maxNeff(int);
     void showInventory();
     void exportInventory(string);
 

@@ -516,17 +516,7 @@ void inventory::printInfoInventory()
         }
     }
 }
-int maxNeff(int numCol)
-{
-    if (numCol > 9)
-    {
-        return 9;
-    }
-    else
-    {
-        return numCol;
-    }
-}
+
 void inventory::showInventory()
 {
     int rows = (int)round((double)this->neff / (double)9);
