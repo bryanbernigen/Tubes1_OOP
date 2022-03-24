@@ -189,7 +189,6 @@ void GameState::move()
     }
 
     // Membagikan ke inventory atau crafting table
-    cout << from << endl;
     char type = from[0];
     int pos = stoi(from.erase(0,1));
     if (type == 'I' || type == 'C')
