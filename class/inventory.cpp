@@ -113,50 +113,90 @@ bool inventory::isTool(int idx)
 { // If false --> NonTool
     return (this->inventories[idx]->getType() == "TOOL");
 }
+bool inventory::isItemTool(Item& other) 
+{ // If false --> NonTool
+    return (other.getType() == "TOOL");
+}
 
 // Functions
 // Add item to inventory
 // 1. add item, unknown slotID
+/*
+    I.S. unknown slotID, item quantity not guaranteed <= 64
+    F.S. item added to inventory.
+    N.B. Item can be partitioned. E.g. item with quantity of 70.
+    1. There's a slot containing same item, quantity 20.
+        To be added item stacked up to that slot of inventory until full.
+        Current inventory's quantity = 64. Item to be added's left quantity = 50.
+        Add to other slot in same manner or add to a new slot if there isn't any
+        slot fullfill requirements
+    2. There's not any slot containing same item.
+        Add item to new slot, partition to 64 and 6 each.
+*/
 void inventory::addInventory(Item &other)
 {
-    int i = 0;
-    // Skip item with different ID while not out of inventories' bound,
-    // If NonTool, skip if sum of other's quantity and its quantity exceeds 64
-    // If Tool, skip
-    // If initially empty, skip
-    while ((i >= 0 && i < 27))
-    {
-        cout << this->inventories[i]->getQuantityDurability() << " + " << other.getQuantityDurability() << " is " << this->inventories[i]->getQuantityDurability() + other.getQuantityDurability() << endl;
-        if (this->isEmpty(i) || (!this->isTool(i) && this->inventories[i]->getID() == other.getID() && this->inventories[i]->getQuantityDurability() + other.getQuantityDurability() <= 64))
-        {
-            break;
-        }
-        else
-        {
+    // If NonTool, can stack
+    if (!isItemTool(other)) {
+        int numItem = other.getQuantityDurability();
+        int i = 0;
+        while (numItem > 0 && i < 27) {
+            if (this->isEmpty(i)) {
+                this->setInventory(this->neff, other);
+                if  (other.getQuantityDurability() > 64) {
+                    // item quantity exceeds 64, limit to 64
+                    cout << " satu " << endl;
+                    this->inventories[i]->setQuantityDurability(64);
+                    other.setQuantityDurability(other.getQuantityDurability()-64);
+                    numItem -= 64;
+                }
+                else {
+                    // item quantity less than 64
+                    cout << " dua " << endl;
+                    this->inventories[i]->setQuantityDurability(numItem);
+                    numItem -= other.getQuantityDurability();
+                }
+                this->nextNeff();
+            }
+            else if (!this->isEmpty(i) && this->inventories[i]->getID() == other.getID() && this->inventories[i]->getQuantityDurability() < 64) {
+                int freeSlot = 64 - this->inventories[i]->getQuantityDurability();
+                if (other.getQuantityDurability() <= freeSlot) {
+                    // directly enter without partitioning
+                    cout << " tiga " << other.getQuantityDurability() << endl;
+                    int total = this->inventories[i]->getQuantityDurability() + other.getQuantityDurability();
+                    this->inventories[i]->setQuantityDurability(total);
+                    other.setQuantityDurability(other.getQuantityDurability()-total);
+                    numItem = 0;
+                }
+                else {
+                    // partition. Fill first (as much as freeSlot)
+                    cout << " empat " << other.getQuantityDurability() << endl;
+                    int total = this->inventories[i]->getQuantityDurability() + freeSlot;
+                    this->inventories[i]->setQuantityDurability(total);
+                    other.setQuantityDurability(other.getQuantityDurability()-freeSlot);
+                    numItem -= freeSlot;
+                }
+            }
             i++;
         }
+        if (numItem > 0 && i >= 27) {
+            // Can't add anymore
+            throw new SlotFullException();
+        }
     }
-
-    // Found item with same ID, if NonTool the sum doesn't exceeds 64, not Tool
-    // or i >= inventories size (max 27)
-    // or first item (initially empty)
-    if (i == this->neff)
-    {
-        // Add to new slot, no current slot satisfy conditions
-        this->setInventory(this->neff, other);
-        this->nextNeff();
+    // Tool, can add to new slot directly
+    else {
+        // as long as not full can add
+        if (!this->isFull()) {
+            this->setInventory(this->neff, other);
+            this->nextNeff();
+        }
+        // in case of full, throw exception
+        else {
+            // Can't add anymore
+            throw new SlotFullException();
+        }
     }
-    else if (i >= 27)
-    {
-        // Can't add anymore
-        throw new SlotFullException();
-    }
-    else
-    {
-        // Add to slot i
-        int total = this->inventories[i]->getQuantityDurability() + other.getQuantityDurability();
-        this->inventories[i]->setQuantityDurability(total);
-    }
+    
 }
 // 2. add item to specific inventory ID
 void inventory::addInventory(Item &other, int slotID)

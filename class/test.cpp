@@ -43,7 +43,7 @@ using namespace std;
 
 int main() {
     inventory temp;
-    NonTool nt3(3, "PLANK", "OAK", 32);
+    NonTool nt3(3, "PLANK", "OAK", 65);
     Tool t3(12, "Pickaxe", "Tools", 5);
     NonTool nt4(3, "PLANK", "OAK", 1);
     temp.addInventory(nt3);

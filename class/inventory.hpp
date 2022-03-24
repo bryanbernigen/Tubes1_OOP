@@ -46,6 +46,7 @@ public:
     bool isEmpty(int);
     bool isItemEmpty(Item&);
     bool isTool(int); // If false --> NonTool
+    bool isItemTool(Item& other);
 
     // Functions
     // Add item to inventory
