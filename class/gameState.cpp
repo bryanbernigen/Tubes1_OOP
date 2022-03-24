@@ -53,7 +53,18 @@ void GameState::commandHandler()
     if (command == "SHOW")
     {
         this->craftingTable.showCraftingTable();
-        this->inv.printInfoInventory();
+        this->inv.
+        printInfoInventory();
+    }
+    else if (command == "SHOW_INFO")
+    {
+        for(int i  = 0; i < inv.getNeff(); i++)
+        {
+	    Item& temp = inv.getInventory(i);
+            cout << temp.getID() << " " 
+                 << temp.getName() << " "
+                 << temp.getType() << endl;
+        }
     }
     else if (command == "GIVE")
     {
