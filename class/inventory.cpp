@@ -112,7 +112,7 @@ bool inventory::isFull()
 }
 bool inventory::isEmpty(int idx)
 { // True if Empty
-    return (this->inventories[idx]->getType() == "Empty");
+    return (this->inventories[idx]->getID() == -1);
 }
 bool inventory::isItemEmpty(Item &check)
 { // True if Empty
@@ -249,169 +249,70 @@ void inventory::addInventory(Item &other, int slotID)
 // Take item from inventory
 Tool *inventory::takeInventory(Tool &other)
 {
-    if (this->neff > 0)
-    {
-        int i = 0;
-
-        // Skip item with different ID while not out of inventories' bound,
-        // If NonTool, skip if num > quantity
-        // while (this->inventories[i]->getID() != other.getID() && i < this->neff
-        //         && !this->isTool(i) && this->inventories[i]->getQuantityDurability() < other.getQuantityDurability() ) {
-        //     i++;
-        // }
-        while (i < 27)
-        {
-            if (this->inventories[i]->getID() == other.getID())
-            {
-                if ((this->isTool(i)) || (this->inventories[i]->getQuantityDurability() >= other.getQuantityDurability()))
-                {
-                    break;
-                }
-                else
-                {
-                    i++;
-                }
-            }
-            else
-            {
-                i++;
-            }
+    cout << "Tool" << endl;
+    
+    int i = 0;
+    bool taken = false;
+    while (i < 27 && !taken) {
+        // Found item with same ID
+        // Take whole item
+        if (this->inventories[i]->getID() == other.getID()) {
+            taken = true;
+            this->setInventory(i, emptyTool);
+            this->nextNeff();
         }
-
-        // Found item with same ID, if NonTool, the quantity is more than num
-        // or i >= inventories size (max 27)
-        if (i < 27)
-        {
-            // Take in slot i
-            int total = this->inventories[i]->getQuantityDurability() - other.getQuantityDurability();
-            if (total > 0)
-            {
-                this->inventories[i]->setQuantityDurability(total);
-            }
-            else if (total == 0)
-            {
-                this->setInventory(this->neff, emptyNonTool);
-                this->nextNeff();
-            }
-            return &other;
-        }
-        else
-        {
-            throw new ItemNotFound();
+        else {
+            i++;
         }
     }
+
+    if (taken) {
+        return &other;
+    }
+    else {
+        throw new ItemNotFound();
+    }
+    
     return &emptyTool;
 }
 NonTool *inventory::takeInventory(NonTool &other)
 {
-    if (this->neff > 0)
-    {
-        int i = 0;
-
-        // Skip item with different ID while not out of inventories' bound,
-        // If NonTool, skip if num > quantity
-        // while (this->inventories[i]->getID() != other.getID() && i < this->neff
-        //         && !this->isTool(i) && this->inventories[i]->getQuantityDurability() < other.getQuantityDurability() ) {
-        //     i++;
-        // }
-        while (i < 27)
-        {
-            if (this->inventories[i]->getID() == other.getID())
-            {
-                if ((this->isTool(i)) || (this->inventories[i]->getQuantityDurability() >= other.getQuantityDurability()))
-                {
-                    break;
-                }
-                else
-                {
-                    i++;
-                }
+    cout << "NonTool" << endl;
+    
+    int i = 0;
+    int num_taken = other.getQuantity();
+    while (i < 27 && num_taken > 0) {
+        if (this->inventories[i]->getID() == other.getID()) {
+            int num_available = this->inventories[i]->getQuantityDurability();
+            if (num_taken < num_available) {
+                // enough quantity, take available
+                this->inventories[i]->setQuantityDurability(this->inventories[i]->getQuantityDurability() - num_taken);
+                num_taken = 0;
             }
-            else
-            {
-                i++;
-            }
-        }
-
-        // Found item with same ID, if NonTool, the quantity is more than num
-        // or i >= inventories size (max 27)
-        if (i < 27)
-        {
-            // Take in slot i
-            int total = this->inventories[i]->getQuantityDurability() - other.getQuantityDurability();
-            if (total > 0)
-            {
-                this->inventories[i]->setQuantityDurability(total);
-            }
-            else if (total == 0)
-            {
-                this->setInventory(this->neff, emptyNonTool);
+            else {
+                // num of available quantity not enough
+                // take whole from this slot, keep searching
+                this->setInventory(i, emptyNonTool);
                 this->nextNeff();
+                num_taken -= 64;
             }
-            return &other;
-        }
-        else
-        {
-            throw new ItemNotFound();
         }
     }
-    return &emptyNonTool;
-}
-Item *inventory::takeInventory(Item &other)
-{
-    if (this->neff > 0)
-    {
-        int i = 0;
 
-        // Skip item with different ID while not out of inventories' bound,
-        // If NonTool, skip if num > quantity
-        // while (this->inventories[i]->getID() != other.getID() && i < this->neff
-        //         && !this->isTool(i) && this->inventories[i]->getQuantityDurability() < other.getQuantityDurability() ) {
-        //     i++;
-        // }
-        while (i < 27)
-        {
-            if (this->inventories[i]->getID() == other.getID())
-            {
-                if ((this->isTool(i)) || (this->inventories[i]->getQuantityDurability() >= other.getQuantityDurability()))
-                {
-                    break;
-                }
-                else
-                {
-                    i++;
-                }
-            }
-            else
-            {
-                i++;
-            }
-        }
-
-        // Found item with same ID, if NonTool, the quantity is more than num
-        // or i >= inventories size (max 27)
-        if (i < 27)
-        {
-            // Take in slot i
-            int total = this->inventories[i]->getQuantityDurability() - other.getQuantityDurability();
-            if (total > 0)
-            {
-                this->inventories[i]->setQuantityDurability(total);
-            }
-            else if (total == 0)
-            {
-                this->setInventory(this->neff, emptyNonTool);
-                this->nextNeff();
-            }
-            return &other;
-        }
-        else
-        {
-            throw new ItemNotFound();
-        }
+    if (num_taken == 0) {
+        return &other;
     }
+    else if (num_taken < other.getQuantityDurability()) {
+        // return new NonTool with taken number of items
+        return new NonTool(other.getID(), other.getName(), other.getType(), other.getQuantityDurability() - num_taken);
+    }
+    else {
+        throw new ItemNotFound();
+    }
+
     return &emptyNonTool;
 }
+
 Item *inventory::takeInventory(int slotID, int quantity)
 {
     if (slotID < 0 || slotID > 26){
@@ -420,7 +321,6 @@ Item *inventory::takeInventory(int slotID, int quantity)
     Item *tempItemInv = this->inventories[slotID]->clone();
     Item *copy = this->inventories[slotID];
     copy->setQuantityDurability(quantity);
-    NonTool tempItem(tempItemInv->getID(), tempItemInv->getName(), tempItemInv->getType(), quantity);
     if (tempItemInv->getID() != -1 && slotID < 27 && slotID >= 0 && tempItemInv->getQuantityDurability() >= quantity)
     {
         int total = tempItemInv->getQuantityDurability() - quantity;
@@ -489,6 +389,9 @@ bool inventory::pileInventory(int idx_src, int idx_dest)
                 return true;
             }
         }
+    }
+    else {
+        throw new ItemTypeDifferent(idx_src, idx_dest);
     }
     return false;
 }

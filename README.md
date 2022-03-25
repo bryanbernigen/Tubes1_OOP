@@ -1,26 +1,19 @@
-# Minecraft-Template
+# Minecraft Major Assignment for Object Oriented Programming
 
-Template repository for Tubes 1 IF2210 2021/2022. Feel free to replace this README with your own content.
-
-## What's Inside
-This template consists of:
-- config folder containing all the config files (items and recipes)
-- tests folder containing two sample test files (input and answer)
-- main.cpp containing the sample main code
-- check.cpp containing the code for checking
-- makefile for compiling and testing
-
-## Running the Makefile
-Make sure you are using Linux with C++17. WSL also works if you are using Windows.
+```c++
+/* Created by "ngOOP" */
+cout << "13520019 / Maharani Ayu Putri Irawan" << endl;
+cout << "13520034 / Bryan Bernigen" << endl;
+cout << "13520040 / Ng Kyle" << endl;
+cout << "13520088 / Rio Alexander Audino" << endl;
+cout << "13520115 / Maria Khelli" << endl;
 ```
-sudo apt-get install make g++
-make all
-```
-Using the sample main file, it should return that 1 out of 2 tests passed.
 
-## Adding More Tests
-You can add more tests by adding more files to the tests folder. Tests consists of two files, input with "in" extension and answer with "ans" extension. Each test should have exactly one EXPORT command which exports the current inventory into an "out" file in the tests folder. Please refer to the sample tests. Checking will be done by comparing the answer file and the output file.
+Description: 
+This is a CLI-based game imitating Minecraft's gameflow. We use object oriented programming concept with C++ as the language.
 
-As the test is done by comparing the output files, you can freely use standard output in your program.
+## How to run
+* If you only wanted to run "play" the game, run ``` .\main ``` (if you are using Windows) on your command-prompt or ``` ./main.exe ```
+(if you are using Linux).
 
-Automated testing will not work if you are using GUI (obviously).
+* If you want to recompile, we recommend you to compile in Windows operating system (since the makefile is made for Windows system). To compile, run ``` MinGW32-make compile ```.

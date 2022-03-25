@@ -23,10 +23,28 @@ public:
 
 class QuantityNotMetException : public exception
 {
+private:
+    int want;
+    int have;
+public:
+    QuantityNotMetException(int want, int have){
+        this->want = want;
+        this->have = have;
+    }
+    const char *what() const throw()
+    {
+        string out;
+        out = "Cant fullfill request of " + to_string(want) + " from " + to_string(have) + " !\n";
+        return out.c_str();
+    }
+};
+
+class OverQuantityException : public exception
+{
 public:
     const char *what() const throw()
     {
-        return "Quantity Not Met\n";
+        return "Resulting Quantity Over Than 64!\n";
     }
 };
 
@@ -88,6 +106,22 @@ public:
     }
 };
 
+class ItemTypeDifferent : public exception
+{
+private:
+    int idx1;
+    int idx2;
+public:
+    ItemTypeDifferent(int idx1, int idx2) : exception() {
+        this->idx1 = idx1;
+        this->idx2 = idx2; 
+    }
+    const char* what() const throw(){
+        string out = "Can't pile since item in slot " + to_string(idx1) + " is different than the one in slot " + to_string(idx2);
+        return out.c_str();
+    }
+};
+
 class IndexOutOfRange : public exception 
 {
 private:
@@ -118,6 +152,14 @@ class NoneCreated : public exception
 public:
     const char* what() const throw(){
         return "There are no item can be created!\n";
+    }
+};
+
+class ToolOverused: public exception
+{
+public:
+    const char* what() const throw(){
+        return "Item Overused! Should be destructed!\n";
     }
 };
 

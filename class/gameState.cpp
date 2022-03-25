@@ -104,15 +104,18 @@ void GameState::commandHandler(string command)
     else if (command == "USE")
     {
         // Get Inventory Id (1..27)
-        int invId;
+        string invId;
 
         // Use tool
-        while (!(cin >> invId))
-        {
-            throw new InvalidCommand();
-            cin.clear();
+        cin >> invId;
+        char mode = invId[0];
+        if (mode == 'I'){
+            use(stoi(invId.erase(0,1)));
         }
-        use(invId);
+        else{
+            throw new InvalidCommand();
+        }
+        
     }
     else if (command == "CRAFT")
     {
@@ -126,6 +129,30 @@ void GameState::commandHandler(string command)
         cout << "Exporting at: " << filename << endl;
         filename += ".txt";
         inv.exportInventory(filename);
+    }
+    else if (command == "CHECK")
+    {
+        string location;
+        cin >> location;
+        if (location[0] == 'C' || location[0] == 'I')
+        {
+            Item* item;
+            char mode = location[0];
+            location.erase(0,1);
+            if (mode == 'C') item = craftingTable.getCrafting(stoi(location));
+            else item = inv.getInventoryPtr(stoi(location));
+            if (item->getType() == "TOOL"){
+                Tool t(item->getID(), item->getName(), item->getType(), item->getQuantityDurability());
+                cout << t;
+            }
+            else{
+                NonTool t(item->getID(), item->getName(), item->getType(), item->getQuantityDurability());
+                cout << t;
+            }
+        }
+        else{
+            throw new InvalidCommand();
+        }
     }
     else
     {
@@ -141,16 +168,16 @@ void GameState::use(int invId)
     // ngecek item yg diambil itu object yang sama(durabilty == 0)
     // cek struktur dict, searchDict ada yg diganti 1->2
 
-    Item &it = *inv.getInventoryPtr(invId - 1);
-    if (inv.isTool(invId - 1))
+    Item* it = inv.getInventoryPtr(invId);
+    if (inv.isTool(invId))
     {
-        it.setQuantityDurability(it.getQuantityDurability() - 1);
-        if (it.getQuantityDurability() == 0)
-        {
-            Item *temp_used;
-            temp_used = inv.takeInventory(it);
-            // temp_used->printInfo();
+        if (it->getQuantityDurability()-1 == 0){
+            inv.takeInventory(invId, 1);
         }
+        else{
+            NonTool nt(it->getID(), it->getName(), it->getType(), it->getQuantityDurability()-1);
+            inv.setInventory(invId,nt);
+        }   
     }
     else
     {
