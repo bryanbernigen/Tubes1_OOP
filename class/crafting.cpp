@@ -64,7 +64,7 @@ Item *Crafting::takeItem(int pos, int quantity)
         return returnedItem;
     }
     if (this->craftingtable[pos]->getQuantityDurability() < quantity)
-        throw new QuantityNotMetException();
+        throw new QuantityNotMetException(quantity,this->craftingtable[pos]->getQuantityDurability());
     else
     {
         Item *returnedItem = this->craftingtable[pos]->clone();

@@ -29,7 +29,7 @@ public:
     int getQuantityDurability();
     void setQuantityDurability(int);
 
-    // friend ostream &operator<<(ostream &, NonTool);
+    friend ostream &operator<<(ostream &, NonTool);
 };
 
 #endif

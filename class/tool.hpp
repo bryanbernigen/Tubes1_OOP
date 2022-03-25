@@ -36,7 +36,7 @@ public:
     void setQuantityDurability(int);
 
     // friend ostream &operator<<(ostream &, NonTool nt);
-    // friend ostream &operator<<(ostream &, Tool);
+    friend ostream &operator<<(ostream &, Tool);
 };
 
 // ostream &operator<<(ostream &os, Tool nt)
