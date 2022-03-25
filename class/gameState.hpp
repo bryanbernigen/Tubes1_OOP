@@ -21,7 +21,7 @@ public:
     GameState(string path_item);
     // ~GameState();
 
-    void commandHandler();
+    void commandHandler(string command);
 
     void move();
     void moveFromInventory(int from, int to, bool toCrafting);

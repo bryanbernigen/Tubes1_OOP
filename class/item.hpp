@@ -2,6 +2,7 @@
 #define __ITEM_HPP_
 
 #include <iostream>
+#include <iomanip>
 #include <string>
 
 using namespace std;
@@ -33,7 +34,7 @@ public:
 
     // Pure Virtual, supaya jadi ABC
     virtual void printInfo() = 0;
-    virtual Item* clone() = 0;
+    virtual Item *clone() = 0;
     virtual int getQuantityDurability() = 0;
     virtual void setQuantityDurability(int) = 0;
 };

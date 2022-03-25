@@ -1,6 +1,7 @@
 #include "gameState.hpp"
 #include "exception.hpp"
 #include <filesystem>
+#include <vector>
 #include <fstream>
 #include <iostream>
 
@@ -45,31 +46,30 @@ GameState::GameState(string config_path)
     }
 }
 
-void GameState::commandHandler()
+void GameState::commandHandler(string command)
 {
-    string command;
-    cout << "Masukkan Input: ";
-    cin >> command;
     if (command == "SHOW")
     {
         this->craftingTable.showCraftingTable();
-        this->inv.
-        printInfoInventory();
+        this->inv.printInfoInventory();
     }
     else if (command == "INFO")
     {
-        cout    << setfill(' ') << left 
-                << setw(3)  << "ID" << " " 
-                << setw(12) << "Name" << " "
-                << setw(12)  << "Type" << " "
-                << "Inv ID" << endl;
-        for(int i  = 0; i < inv.getNeff(); i++)
+        cout << setfill(' ') << left
+             << setw(3) << "ID"
+             << " "
+             << setw(12) << "Name"
+             << " "
+             << setw(12) << "Type"
+             << " "
+             << "Inv ID" << endl;
+        for (int i = 0; i < inv.getNeff(); i++)
         {
-	        Item& temp = inv.getInventory(i);
-            cout << setfill(' ') 
-                 << setw(3)  << temp.getID() << " " 
+            Item &temp = inv.getInventory(i);
+            cout << setfill(' ')
+                 << setw(3) << temp.getID() << " "
                  << setw(12) << temp.getName() << " "
-                 << setw(12)  << temp.getType() << " "
+                 << setw(12) << temp.getType() << " "
                  << i << endl;
         }
 
@@ -106,14 +106,13 @@ void GameState::commandHandler()
         // Get Inventory Id (1..27)
         int invId;
 
-        // Use tool 
+        // Use tool
         while (!(cin >> invId))
         {
             throw new InvalidCommand();
             cin.clear();
-        }       
+        }
         use(invId);
-        
     }
     else if (command == "CRAFT")
     {
@@ -124,8 +123,8 @@ void GameState::commandHandler()
     {
         string filename;
         cin >> filename;
-        cout<< "Exporting at: "<<filename<<endl;
-        filename+=".txt";
+        cout << "Exporting at: " << filename << endl;
+        filename += ".txt";
         inv.exportInventory(filename);
     }
     else
@@ -150,7 +149,7 @@ void GameState::use(int invId)
         {
             Item *temp_used;
             temp_used = inv.takeInventory(it);
-            //temp_used->printInfo();
+            // temp_used->printInfo();
         }
     }
     else
@@ -163,7 +162,6 @@ void GameState::give(string nama, int jumlah)
 {
     Item *it = this->inv.searchDict(nama, jumlah);
     this->inv.addInventory(*it);
-    
 }
 
 void GameState::discard(int id_inventory, int jumlah)
@@ -176,14 +174,14 @@ void GameState::move()
     string from, to;
     int N;
 
-    //First param input validator
+    // First param input validator
     while (!(cin >> from))
     {
         throw new InvalidCommand();
         cin.clear();
     }
 
-    //String input validator
+    // String input validator
     while (!(cin >> N))
     {
         throw new InvalidCommand();
@@ -192,16 +190,16 @@ void GameState::move()
 
     // Membagikan ke inventory atau crafting table
     char type = from[0];
-    int pos = stoi(from.erase(0,1));
+    int pos = stoi(from.erase(0, 1));
     if (type == 'I' || type == 'C')
     {
-        if (N < 0) 
+        if (N < 0)
         {
             // Jumlah negatif tidak valid
             throw new InvalidSlotAmount();
         }
         if (N > 0)
-        {           
+        {
             if (type == 'I' && inv.getInventory(pos).getQuantityDurability() < N)
             {
                 // Jumlah move item melebihi jumlah di inventory
@@ -211,18 +209,18 @@ void GameState::move()
             {
                 // Jumlah moe item melebihi jumlah di crafting table
                 throw new InvalidSlotAmount();
-            }        
+            }
             else
-            {            
+            {
                 // Distribusikan
                 string namaSlot;
                 vector<string> slots;
                 string temp;
 
-                //Mendapatkan list of inventory/crafting yang akan didistrirbusikan
+                // Mendapatkan list of inventory/crafting yang akan didistrirbusikan
                 getline(cin, namaSlot);
-                namaSlot.erase(0,1);
-                for(auto ch : namaSlot)
+                namaSlot.erase(0, 1);
+                for (auto ch : namaSlot)
                 {
                     if (ch == ' ')
                     {
@@ -230,22 +228,21 @@ void GameState::move()
                         temp = "";
                         continue;
                     }
-                    temp += ch;             
-                    
-                }            
+                    temp += ch;
+                }
                 slots.push_back(temp);
-                
+
                 // Membagikan item ke tiap elemen dalam list
                 int remainingItem = N;
                 bool isFull = false;
                 int i = 0;
 
-                while(!isFull && remainingItem > 0)
+                while (!isFull && remainingItem > 0)
                 {
-                    // Mengiterasikan elemen satu per satu 
-                    to = slots[i%slots.size()];
+                    // Mengiterasikan elemen satu per satu
+                    to = slots[i % slots.size()];
                     i++;
-                    remainingItem--;              
+                    remainingItem--;
                     char mode = to[0];
                     to.erase(0, 1);
                     this->moveTo(pos, stoi(to), type == 'C', mode == 'C');
@@ -259,12 +256,15 @@ void GameState::move()
     }
 }
 
-void GameState::moveTo(int from, int to, bool fromCrafting, bool toCrafting){
-    Item* taken;
-    if (fromCrafting){
+void GameState::moveTo(int from, int to, bool fromCrafting, bool toCrafting)
+{
+    Item *taken;
+    if (fromCrafting)
+    {
         taken = this->craftingTable.getCrafting(from);
     }
-    else{
+    else
+    {
         taken = this->inv.getInventoryPtr(from);
         // if (temp->getType() == "TOOL"){
         //     taken = this->inv.getInventoryPtr(from,temp->getQuantityDurability());
@@ -273,36 +273,45 @@ void GameState::moveTo(int from, int to, bool fromCrafting, bool toCrafting){
         //     taken = this->inv.getInventory(from,1);
         // }
     }
-    
-    if (taken->getType() == "TOOL"){
+
+    if (taken->getType() == "TOOL")
+    {
         Tool tmpItem(taken->getID(), taken->getName(), taken->getType(), taken->getQuantityDurability());
-        if (toCrafting){
+        if (toCrafting)
+        {
             craftingTable.addToCraftingTable(tmpItem, to);
         }
-        else{
-            inv.addInventory(tmpItem,to);
+        else
+        {
+            inv.addInventory(tmpItem, to);
         }
-        if (fromCrafting){
-            this->craftingTable.takeItem(from,1);
+        if (fromCrafting)
+        {
+            this->craftingTable.takeItem(from, 1);
         }
-        else{
-            this->inv.takeInventory(from,taken->getQuantityDurability());
+        else
+        {
+            this->inv.takeInventory(from, taken->getQuantityDurability());
         }
     }
-    else{
+    else
+    {
         NonTool tmpItem(taken->getID(), taken->getName(), taken->getType(), 1);
-        if (toCrafting){
+        if (toCrafting)
+        {
             craftingTable.addToCraftingTable(tmpItem, to);
         }
-        else{
-            inv.addInventory(tmpItem,to);
+        else
+        {
+            inv.addInventory(tmpItem, to);
         }
-        if (fromCrafting){
-            this->craftingTable.takeItem(from,1);
+        if (fromCrafting)
+        {
+            this->craftingTable.takeItem(from, 1);
         }
-        else{
-            this->inv.takeInventory(from,1);
+        else
+        {
+            this->inv.takeInventory(from, 1);
         }
-        
     }
 }

@@ -3,7 +3,10 @@ EXT_IN = in
 EXT_OUT = out
 EXT_ANS = ans
 EXECUTABLE_FILENAME = main
-ALL_SRCS := $(wildcard *.cpp)
+CLASS_FOLDER = class
+
+TESTS := $(wildcard $(TC_FOLDER)/*.$(EXT_IN))
+ALL_SRCS := $(wildcard $(CLASS_FOLDER)/*.cpp) $(wildcard *.cpp)
 SRCS     := $(filter-out check.cpp, $(ALL_SRCS))
 
 all: compile test check
@@ -13,14 +16,12 @@ compile:
 	g++ -std=c++17 -o $(EXECUTABLE_FILENAME) $(SRCS)
 
 # Test
-test: $(TC_FOLDER)/*.$(EXT_IN) $(EXECUTABLE_FILENAME)
-	for inputfile in $(TC_FOLDER)/*.$(EXT_IN); do \
-		./$(EXECUTABLE_FILENAME) < $$inputfile; \
-	done;
+test: $(TESTS) compile
+	$(foreach inputfile, $(TESTS), .\$(EXECUTABLE_FILENAME) < $(inputfile) &&) echo.
 
 # Check
 check: FORCE check.cpp
 	g++ -std=c++17 -o check check.cpp
-	./check
+	.\check
 
 FORCE: ;

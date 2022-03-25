@@ -131,7 +131,6 @@ void Crafting::showCraftingTable()
         if (this->slotStatus[i])
         {
             this->craftingtable[i]->printInfo();
-            cout<<this->craftingtable[i]->getType();
         }
         else
         {
