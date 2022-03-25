@@ -66,7 +66,7 @@ int main()
     cout << "Success Piling inventory item! " << successPiling << endl << endl;
     temp.printInfoInventory();
 
-    // temp.exportInventory("tests/example.txt");
+    temp.exportInventory("tests/example.out");
 
-    // temp.~inventory();
+    temp.~inventory();
 }
