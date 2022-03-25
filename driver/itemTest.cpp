@@ -31,13 +31,13 @@ int main()
     // NonTool Functionality
     NonTool nt1;
     NonTool nt2(1, "OAK_LOG", "LOG");
-    NonTool nt3(3, "OAK_PLANK", "PLANK", 64);
+    NonTool nt3(3, "OAK_PLANK", "PLANK", 62);
 
-    cout << "=============DEFAULT NONTTOOL CONSTRUCTOR============="<<endl;
+    cout << "=============DEFAULT NONTOOL CONSTRUCTOR=============="<<endl;
     cout << nt1;
     cout << "================CREATE OAK LOG DEFAULT================"<<endl;
     cout << nt2;
-    cout << "==================CREATE OAK PLANK 64================="<<endl;
+    cout << "==================CREATE OAK PLANK 62================="<<endl;
     cout << nt3;
     cout << "====================TAKE OAK PLANK 1=================="<<endl;
     nt3.takeItem(1);

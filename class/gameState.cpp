@@ -127,6 +127,30 @@ void GameState::commandHandler(string command)
         filename += ".txt";
         inv.exportInventory(filename);
     }
+    else if (command == "CHECK")
+    {
+        string location;
+        cin >> location;
+        if (location[0] == 'C' || location[0] == 'I')
+        {
+            Item* item;
+            char mode = location[0];
+            location.erase(0,1);
+            if (mode == 'C') item = craftingTable.getCrafting(stoi(location));
+            else item = inv.getInventoryPtr(stoi(location));
+            if (item->getType() == "TOOL"){
+                Tool t(item->getID(), item->getName(), item->getType(), item->getQuantityDurability());
+                cout << t;
+            }
+            else{
+                NonTool t(item->getID(), item->getName(), item->getType(), item->getQuantityDurability());
+                cout << t;
+            }
+        }
+        else{
+            throw new InvalidCommand();
+        }
+    }
     else
     {
         // throw ivalidCommand
