@@ -65,6 +65,6 @@ int main()
     cout << nt2.getID() << " " << nt2.getName() << " " << nt2.getType() << endl;
     cout << nt3.getID() << " " << nt3.getName() << " " << nt3.getType() << endl;
     cout << "=== END OF NONTOOL TESTING ===" << endl;
-
+    //
     return 0;
 }
