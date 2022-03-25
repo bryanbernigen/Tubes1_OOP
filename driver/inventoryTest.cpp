@@ -1,7 +1,7 @@
 #include <iostream>
-#include "inventory.cpp"
-#include "tool.cpp"
-#include "NonTool.cpp"
+#include "../class/inventory.cpp"
+#include "../class/tool.cpp"
+#include "../class/NonTool.cpp"
 using namespace std;
 
 int main()

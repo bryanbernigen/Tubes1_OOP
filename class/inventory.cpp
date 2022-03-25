@@ -543,7 +543,7 @@ void inventory::showInventory()
 void inventory::exportInventory(string filename)
 {
     ofstream exportFile;
-    exportFile.open(filename);
+    exportFile.open(filename.c_str(), ios::out);
     for (int i = 0; i < 27; i++)
     {
         if (this->isEmpty(i))
