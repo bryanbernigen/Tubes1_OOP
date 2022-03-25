@@ -56,9 +56,13 @@ public:
     void addInventory(Item&, int);
 
     // Take item from inventory
+    // 1. take Tool from Inventory
     Tool* takeInventory(Tool&);
+    // 2. take NonTool from Inventory
     NonTool* takeInventory(NonTool&);
-    Item* takeInventory(Item& other);
+    // 3. take item from inventory
+    Item* takeInventory(Item&);
+    // 4. take item with specific slot id and quantity
     Item* takeInventory(int, int);
 
     // Move item from src slot to dest slot
