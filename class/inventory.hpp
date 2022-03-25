@@ -60,9 +60,7 @@ public:
     Tool* takeInventory(Tool&);
     // 2. take NonTool from Inventory
     NonTool* takeInventory(NonTool&);
-    // 3. take item from inventory
-    Item* takeInventory(Item&);
-    // 4. take item with specific slot id and quantity
+    // 3. take item with specific slot id and quantity
     Item* takeInventory(int, int);
 
     // Move item from src slot to dest slot

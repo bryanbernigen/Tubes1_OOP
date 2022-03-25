@@ -88,6 +88,22 @@ public:
     }
 };
 
+class ItemTypeDifferent : public exception
+{
+private:
+    int idx1;
+    int idx2;
+public:
+    ItemTypeDifferent(int idx1, int idx2) : exception() {
+        this->idx1 = idx1;
+        this->idx2 = idx2; 
+    }
+    const char* what() const throw(){
+        string out = "Can't pile since item in slot " + to_string(idx1) + " is different than the one in slot " + to_string(idx2);
+        return out.c_str();
+    }
+};
+
 class IndexOutOfRange : public exception 
 {
 private:
