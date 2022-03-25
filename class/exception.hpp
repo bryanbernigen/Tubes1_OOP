@@ -23,10 +23,28 @@ public:
 
 class QuantityNotMetException : public exception
 {
+private:
+    int want;
+    int have;
+public:
+    QuantityNotMetException(int want, int have){
+        this->want = want;
+        this->have = have;
+    }
+    const char *what() const throw()
+    {
+        string out;
+        out = "Cant fullfill request of " + to_string(want) + " from " + to_string(have) + " !\n";
+        return out.c_str();
+    }
+};
+
+class OverQuantityException : public exception
+{
 public:
     const char *what() const throw()
     {
-        return "Quantity Not Met\n";
+        return "Resulting Quantity Over Than 64!\n";
     }
 };
 
@@ -134,6 +152,14 @@ class NoneCreated : public exception
 public:
     const char* what() const throw(){
         return "There are no item can be created!\n";
+    }
+};
+
+class ToolOverused: public exception
+{
+public:
+    const char* what() const throw(){
+        return "Item Overused! Should be destructed!\n";
     }
 };
 

@@ -1,5 +1,5 @@
 #include "NonTool.hpp"
-
+#include "exception.hpp"
 NonTool::NonTool() : Item(), quantity(1) {}
 NonTool::NonTool(int id, string name, string type) : Item(id, name, type), quantity(1) {}
 NonTool::NonTool(int id, string name, string type, int qty) : Item(id, name, type), quantity(qty) {}
@@ -15,7 +15,7 @@ void NonTool::takeItem(int amount)
 {
     if (amount > this->quantity)
     {
-        cout << "You don't have that many item! Aborting..." << endl;
+        throw new QuantityNotMetException(amount, this->quantity);
     }
     else
     {
@@ -27,7 +27,7 @@ void NonTool::addItem(int amount)
 {
     if (this->quantity + amount > MAX_QUANTITY)
     {
-        cout << "Aaaah!! You add too many item! Please separate them. Aborting... " << endl;
+        throw new OverQuantityException();
     }
     else
     {
@@ -51,9 +51,13 @@ NonTool *NonTool::clone()
 
 ostream &operator<<(ostream &os, NonTool nt)
 {
-    os << nt.getName() << ", " << nt.getQuantity();
+    os << "ID         : " << nt.getID() << endl;
+    os << "Name       : " << nt.getName() << endl;
+    os << "Type       : " << nt.getType() << endl;
+    os << "Quantity   : " << nt.getQuantityDurability() << endl;
     return os;
 }
+
 int NonTool::getQuantityDurability()
 {
     return this->getQuantity();

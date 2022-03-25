@@ -25,7 +25,7 @@ void Crafting::addToCraftingTable(Item &item, int pos)
     // Item already exist in that slot
     if (this->slotStatus[pos])
     {
-        if (this->craftingtable[pos]->getType() != item.getType() || this->craftingtable[pos]->getType() == "TOOL")
+        if (this->craftingtable[pos]->getName() != item.getName() || this->craftingtable[pos]->getType() == "TOOL")
             throw new SlotFilledException();
         else
         {
@@ -64,7 +64,7 @@ Item *Crafting::takeItem(int pos, int quantity)
         return returnedItem;
     }
     if (this->craftingtable[pos]->getQuantityDurability() < quantity)
-        throw new QuantityNotMetException();
+        throw new QuantityNotMetException(quantity,this->craftingtable[pos]->getQuantityDurability());
     else
     {
         Item *returnedItem = this->craftingtable[pos]->clone();

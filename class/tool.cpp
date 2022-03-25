@@ -1,5 +1,5 @@
 #include "Tool.hpp"
-
+#include "exception.hpp"
 Tool::Tool() : Item()
 {
     this->durability = MAX_DURABILITY;
@@ -43,7 +43,7 @@ void Tool::useTool()
     }
     else
     {
-        throw "Tool sudah tidak dapat dipakai";
+        throw new ToolOverused();
     }
 }
 
@@ -70,8 +70,11 @@ void Tool::setQuantityDurability(int number)
     this->setDurability(number);
 }
 
-// ostream &operator<<(ostream &os, Tool t)
-// {
-//     os << t.getName() << ", " << t.getDurability();
-//     return os;
-// }
+ostream &operator<<(ostream &os, Tool t)
+{
+    os << "ID         : " << t.getID() << endl;
+    os << "Name       : " << t.getName() << endl;
+    os << "Type       : " << t.getType() << endl;
+    os << "Durability : " << t.getQuantityDurability() << endl;
+    return os;
+}
